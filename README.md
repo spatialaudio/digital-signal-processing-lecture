@@ -6,7 +6,7 @@ The lecture notes are under heavy development. New units will be added throughou
 
 ## Getting Started
 
-The jupyter notebooks are available as [static web pages](https://github.com/spatialaudio/digital-signal-processing-lecture/blob/master/index.ipynb).
+The jupyter notebooks are available as [static web pages](http://nbviewer.ipython.org/github/spatialaudio/digital-signal-processing-lecture/blob/master/index.ipynb).
 
 For interactive use, e.g. for the exercises, you have to [download the notebooks from Github](http://github.com/spatialaudio/digital-signal-processing-lecture). Use [Git](http://git-scm.org/) to download the files and then start the IPython notebook:
 
