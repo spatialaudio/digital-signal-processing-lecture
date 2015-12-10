@@ -1,8 +1,8 @@
 # Digital Signal Processing
 
-This repository contains the lecture notes to the masters course [Digital Signal Processing](http://www.int.uni-rostock.de/Digitale-Signalverarbeitung.48.0.html), [Institute of Communications Engineering](http://www.int.uni-rostock.de/), Universität Rostock. The notes are provided in the form of [Jupyter](https://jupyter.org/) notebooks using IPython 3. This content is provided as [Open Educational Resource](https://de.wikipedia.org/wiki/Open_Educational_Resources) (ORE).
+This repository contains the lecture notes to the masters course [Digital Signal Processing](http://www.int.uni-rostock.de/Digitale-Signalverarbeitung.48.0.html), [Institute of Communications Engineering](http://www.int.uni-rostock.de/), Universität Rostock. The notes are provided in the form of [Jupyter](https://jupyter.org/) notebooks using IPython 3 as [Open Educational Resource](https://de.wikipedia.org/wiki/Open_Educational_Resources) (ORE).
 
-The lecture notes are under heavy development. New units will be added throughout the winter 2015/16. Feel free to contact me if you find errors, or have questions and suggestions via <mailto:Sascha.Spors@uni-rostock.de>. 
+The lecture notes are currently under heavy development. New units will be added throughout the winter 2015/16. Feel free to contact me if you find errors, or have questions and suggestions via <mailto:Sascha.Spors@uni-rostock.de>. 
 
 ## Getting Started
 
