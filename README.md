@@ -10,15 +10,15 @@ The jupyter notebooks are available
 
 * Online as [static web pages](http://nbviewer.ipython.org/github/spatialaudio/digital-signal-processing-lecture/blob/master/index.ipynb)
 * Online for [interactive use](http://mybinder.org/repo/spatialaudio/digital-signal-processing-lecture)
-* Local use on your computer
+* Local (offline) use on your computer
 
-For local use on your computer, e.g. for the exercises, you have to [download the notebooks from Github](http://github.com/spatialaudio/digital-signal-processing-lecture). Use [Git](http://git-scm.org/) to download the files and then start the IPython notebook:
+For local use on your computer, e.g. for the exercises, you have to [download the notebooks from Github](http://github.com/spatialaudio/digital-signal-processing-lecture). Use [Git](http://git-scm.org/) to download the files and then start the Juyter notebook:
 
     git clone https://github.com/spatialaudio/digital-signal-processing-lecture.git
     cd digital-signal-processing-lecture
-    ipython3 notebook
+    jupyter-notebook
     
-This will open a new view in your web browser with a list of notebooks. Click on [index.ipynb](index.ipynb) (or any of the other available notebooks). Alternatively, you can also download individual notebook files (with the extension `.ipynb`) and open them in IPython. Note that some notebooks make use of additional files (audio files etc.) which you'll then also have to download manually.
+This will open a new view in your web browser with a list of notebooks. Click on [index.ipynb](index.ipynb) (or any of the other available notebooks). Alternatively, you can also download individual notebook files (with the extension `.ipynb`) and open them in Jupyter. Note that some notebooks make use of additional files (audio files etc.) which you'll then also have to download manually.
 
 <p>
-<img src="http://www.unesco.org/webworld/download/oer/EN/oer_logo_EN_1.png" alt="Open Educational Resource" style="width:200px">
+<img src="http://www.unesco.org/webworld/download/oer/EN/oer_logo_EN_1.png" alt="Open Educational Resource" width="200">
