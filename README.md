@@ -21,4 +21,4 @@ For local use on your computer, e.g. for the exercises, you have to [download th
 This will open a new view in your web browser with a list of notebooks. Click on [index.ipynb](index.ipynb) (or any of the other available notebooks). Alternatively, you can also download individual notebook files (with the extension `.ipynb`) and open them in IPython. Note that some notebooks make use of additional files (audio files etc.) which you'll then also have to download manually.
 
 <p>
-<img src="http://www.unesco.org/webworld/download/oer/EN/oer_logo_EN_1.png" alt="Open Educational Resource" style="width:304px">
+<img src="http://www.unesco.org/webworld/download/oer/EN/oer_logo_EN_1.png" alt="Open Educational Resource" style="width:200px">
