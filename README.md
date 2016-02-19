@@ -13,7 +13,7 @@ The Jupyter notebooks are available
 * Online for [interactive use](http://mybinder.org/repo/spatialaudio/digital-signal-processing-lecture) using [binder](http://mybinder.org/)
 * Local (offline) use on your computer 
 
-For local use on your computer you need a local Jupyter/IPython installation. The [Anaconda distribtution](https://www.continuum.io/downloads) provides a good starting point. You have to [clone/download the notebooks from Github](http://github.com/spatialaudio/digital-signal-processing-lecture). Use a [Git](http://git-scm.org/) client to clone the notebooks and then start your local Jupyter.
+For local use on your computer you need a local Jupyter/IPython installation. The [Anaconda distribtution](https://www.continuum.io/downloads) provides a good starting point. You have to [clone/download the notebooks from Github](http://github.com/spatialaudio/digital-signal-processing-lecture). Use a [Git](http://git-scm.org/) client to clone the notebooks and then start your local Jupyter server. For manual installation under OS X/Linux please refer to your packet manager.
 
 
 ## License
@@ -23,4 +23,4 @@ For local use on your computer you need a local Jupyter/IPython installation. Th
 <img src="http://www.unesco.org/webworld/download/oer/EN/oer_logo_EN_1.png" alt="Open Educational Resource" width="300">
 </center>
 
-The notebooks are provided as [Open Educational Resource](https://de.wikipedia.org/wiki/Open_Educational_Resources) and licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/). Feel free to use the notebooks for your own educational purposes.
+The notebooks are provided as [Open Educational Resource](https://de.wikipedia.org/wiki/Open_Educational_Resources). The text is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/), the code of the IPython examples under the [MIT license](https://opensource.org/licenses/MIT). Plese use the following attribution: Digital Signal Processing by Sascha Spors. Feel free to use the notebooks for your own educational purposes.
