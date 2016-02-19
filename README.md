@@ -23,4 +23,4 @@ For local use on your computer you need a local Jupyter/IPython installation. Th
 <img src="http://www.unesco.org/webworld/download/oer/EN/oer_logo_EN_1.png" alt="Open Educational Resource" width="300">
 </center>
 
-The notebooks are provided as [Open Educational Resource](https://de.wikipedia.org/wiki/Open_Educational_Resources). The text is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/), the code of the IPython examples under the [MIT license](https://opensource.org/licenses/MIT). Plese use the following attribution: Digital Signal Processing by Sascha Spors. Feel free to use the notebooks for your own educational purposes.
+The notebooks are provided as [Open Educational Resource](https://de.wikipedia.org/wiki/Open_Educational_Resources). Feel free to use the notebooks for your own educational purposes. The text is licensed under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/), the code of the IPython examples under the [MIT license](https://opensource.org/licenses/MIT). Please attribute the work as follows: *Digital Signal Processing* by Sascha Spors.
