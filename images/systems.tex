@@ -1,0 +1,47 @@
+\input{prefix}
+
+% =============================================================================
+% =============================================================================
+\begin{document}
+
+% generic system
+\begin{tikzpicture}[auto, node distance=3cm]
+    \node [input, name=input] {};
+    \node [block, right of=input,yshift=0cm] (system){\Large $\mathcal{H}$};
+    \node [output, right of=system,xshift=0cm] (output) {};
+    
+    \draw [-latex] (input) node[left]{$x[k]$}  -- (system);
+    \draw [-latex] (system)  -- (output) node[right]{$y[k]$};
+\end{tikzpicture}
+
+% LTI with impulse response
+\begin{tikzpicture}[auto, node distance=3cm]
+    \node [input, name=input] {};
+    \node [block, right of=input,yshift=0cm] (system){\Large $h[k]$};
+    \node [output, right of=system,xshift=0cm] (output) {};
+    
+    \draw [-latex] (input) node[left]{$x[k]$}  -- (system);
+    \draw [-latex] (system)  -- (output) node[right]{$y[k]$};
+\end{tikzpicture}
+
+% system for ARMA models
+\begin{tikzpicture}[auto, node distance=3cm]
+    \node [input, name=input] {};
+    \node [block, right of=input,yshift=0cm] (system){\Large $H(e^{j \Omega})$};
+    \node [output, right of=system,xshift=0cm] (output) {};
+    
+    \draw [-latex] (input) node[left]{$n[k]$}  -- (system);
+    \draw [-latex] (system)  -- (output) node[right]{$x[k]$};
+\end{tikzpicture}
+
+% inverse system for AR models
+\begin{tikzpicture}[auto, node distance=3cm]
+    \node [input, name=input] {};
+    \node [block, right of=input,yshift=0cm] (system){\Large $G(e^{j \Omega})$};
+    \node [output, right of=system,xshift=0cm] (output) {};
+    
+    \draw [-latex] (input) node[left]{$x[k]$}  -- (system);
+    \draw [-latex] (system)  -- (output) node[right]{$e[k]$};
+\end{tikzpicture}
+
+\end{document}

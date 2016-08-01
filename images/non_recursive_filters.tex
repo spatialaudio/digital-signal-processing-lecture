@@ -1,0 +1,158 @@
+\input{prefix}
+
+% =============================================================================
+% =============================================================================
+\begin{document}
+
+
+
+
+% overlap-add convolution
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\begin{tikzpicture}[auto, node distance=25mm]
+    
+    % input segments
+    \node[block, minimum height=1em, minimum width=25mm] (x0){$x_0[k]$};
+    \node[block, right of=x0, minimum height=1em, minimum width=25mm] (x1){$x_1[k]$};
+    \node[block, right of=x1, minimum height=1em, minimum width=25mm] (x2){$x_2[k]$};
+    \node[block, right of=x2, minimum height=1em, minimum width=25mm] (x3){$x_3[k]$};
+    \node[right of=x3, xshift=-5mm] {$\dots$};
+    
+    \node[block, right of=x0, minimum height=1em, minimum width=15mm, xshift=10cm] (h){$h[k]$};
+    \node[left of=h, xshift=15mm] {$*$};
+    
+    % convolved segments
+    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y0) at ($(x0.west) - (0, 1.5)$) {$y_0[k] = x_0[k] * h[k]$};
+    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y1) at ($(x1.west) - (0, 2.75)$) {$y_1[k] = x_1[k] * h[k]$};
+    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y2) at ($(x2.west) - (0, 4)$) {$y_2[k] = x_2[k] * h[k]$};
+    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y3) at ($(x3.west) - (0, 5.25)$) {$y_3[k] = x_3[k] * h[k]$};
+    % output
+    \node[block, minimum height=1em, minimum width=100mm, anchor=west](y) at ($(x0.west) - (0, 7)$) {$y[k]$};
+    \node[right of=y, xshift=35mm] {$\dots$};
+    
+    % segment borders
+    \begin{pgfonlayer}{background}
+    \draw[dashed] (x1.west) -- ($(x1.west) - (0, 7)$);
+    \draw[dashed] (x2.west) -- ($(x2.west) - (0, 7)$);
+    \draw[dashed] (x3.west) -- ($(x3.west) - (0, 7)$);
+    \draw[dashed] (x3.east) -- ($(x3.east) - (0, 7)$);
+    
+    \draw[dashed] (y0.east) -- ($(y0.east) - (0, 1.25)$);
+    \draw[dashed] (y1.east) -- ($(y1.east) - (0, 1.25)$);
+    \draw[dashed] (y2.east) -- ($(y2.east) - (0, 1.25)$);
+    \end{pgfonlayer}
+    
+    % sums
+    \node at ($(y0.east) - (7mm, 6mm)$) {\bf $+$};
+    \node at ($(y1.east) - (7mm, 6mm)$) {\bf $+$};
+    \node at ($(y2.east) - (7mm, 6mm)$) {\bf $+$};
+    
+    % sizes
+    \draw ($(x0.north west) + (0,.1) $) -- ($(x0.north west) + (0,.4) $);
+    \draw ($(x0.north east) + (0,.1) $) -- ($(x0.north east) + (0,.4) $);
+    \draw[<->] ($(x0.north west) + (0,.3) $) -- ($(x0.north east) + (0,.3) $) node[midway]{$P$};
+    
+    \draw ($(h.north west) + (0,.1) $) -- ($(h.north west) + (0,.4) $);
+    \draw ($(h.north east) + (0,.1) $) -- ($(h.north east) + (0,.4) $);
+    \draw[<->] ($(h.north west) + (0,.3) $) -- ($(h.north east) + (0,.3) $) node[midway]{$N$};
+    
+    \draw ($(y0.north west) + (0,.1) $) -- ($(y0.north west) + (0,.4) $);
+    \draw ($(y0.north east) + (0,.1) $) -- ($(y0.north east) + (0,.4) $);
+    \draw[<->] ($(y0.north west) + (0,.3) $) -- ($(y0.north east) + (0,.3) $) node[midway]{$P + N - 1$}; 
+
+\end{tikzpicture}
+
+
+
+% overlap-save convolution
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\begin{tikzpicture}[auto, node distance=25mm]
+
+	% input
+    \node[block, minimum height=1em, minimum width=100mm](x) {$x[k]$};
+    \node[block, minimum height=5mm, minimum width=15mm, anchor=east](x00) at (x.west) {$0 {\color{gray!20} [}$};
+    \node[right of=x, xshift=35mm] {$\dots$};
+	
+	% input segments	
+	\node[block, minimum height=1em, minimum width=40mm, anchor=west](x0) at ($(x00.west) - (0, 1.5)$) {$x_0[k]$};
+	\node[block, minimum height=1em, minimum width=40mm, anchor=west, xshift=-15mm](x1) at ($(x0.east) - (0, 1.5)$) {$x_1[k]$};
+	\node[block, minimum height=1em, minimum width=40mm, anchor=west, xshift=-15mm](x2) at ($(x1.east) - (0, 1.5)$) {$x_2[k]$};
+	\node[block, minimum height=1em, minimum width=40mm, anchor=west, xshift=-15mm](x3) at ($(x2.east) - (0, 1.5)$) {$x_3[k]$};
+	
+	% convolved segments
+	\node[block, minimum height=1em, minimum width=40mm, anchor=west](yc0) at ($(x0.west) - (0, 0.6)$) {$\qquad \qquad x_0[k] \circledast h_N[k]$};
+	\node[block, minimum height=1em, minimum width=40mm, anchor=west](yc1) at ($(x1.west) - (0, 0.6)$) {$\qquad \qquad x_1[k] \circledast h_N[k]$};
+	\node[block, minimum height=1em, minimum width=40mm, anchor=west](yc2) at ($(x2.west) - (0, 0.6)$) {$\qquad \qquad x_2[k] \circledast h_N[k]$};
+	\node[block, minimum height=1em, minimum width=40mm, anchor=west](yc3) at ($(x3.west) - (0, 0.6)$) {$\qquad \qquad x_3[k] \circledast h_N[k]$};
+	
+	\draw[draw=gray!100, opacity=0.5] (yc0.north west) -- ($(yc0.south west) + (1.5, 0)$);
+	\draw[draw=gray!100, opacity=0.5] (yc0.south west) -- ($(yc0.north west) + (1.5, 0)$);
+	\draw[draw=gray!100, opacity=0.5] ($(yc0.north west) + (1.5, 0)$) -- ($(yc0.south west) + (1.5, 0)$);
+	
+	\draw[draw=gray!100, opacity=0.5] (yc1.north west) -- ($(yc1.south west) + (1.5, 0)$);
+	\draw[draw=gray!100, opacity=0.5] (yc1.south west) -- ($(yc1.north west) + (1.5, 0)$);
+	\draw[draw=gray!100, opacity=0.5] ($(yc1.north west) + (1.5, 0)$) -- ($(yc1.south west) + (1.5, 0)$);
+	
+	\draw[draw=gray!100, opacity=0.5] (yc2.north west) -- ($(yc2.south west) + (1.5, 0)$);
+	\draw[draw=gray!100, opacity=0.5] (yc2.south west) -- ($(yc2.north west) + (1.5, 0)$);
+	\draw[draw=gray!100, opacity=0.5] ($(yc2.north west) + (1.5, 0)$) -- ($(yc2.south west) + (1.5, 0)$);
+	
+	\draw[draw=gray!100, opacity=0.5] (yc3.north west) -- ($(yc3.south west) + (1.5, 0)$);
+	\draw[draw=gray!100, opacity=0.5] (yc3.south west) -- ($(yc3.north west) + (1.5, 0)$);
+	\draw[draw=gray!100, opacity=0.5] ($(yc3.north west) + (1.5, 0)$) -- ($(yc3.south west) + (1.5, 0)$);
+	
+
+	% output segments
+	\node[block, minimum height=1em, minimum width=25mm, anchor=west](y0) at ($(x.west) - (0, 8)$) {$y_0[k]$};
+	\node[block, right of=y0, minimum height=1em, minimum width=25mm] (y1){$y_1[k]$};
+	\node[block, right of=y1, minimum height=1em, minimum width=25mm] (y2){$y_2[k]$};
+	\node[block, right of=y2, minimum height=1em, minimum width=25mm] (y3){$y_3[k]$};
+	\node[right of=y3, xshift=-5mm] {$\dots$};
+	
+	% segment borders
+	\begin{pgfonlayer}{background}
+	\draw[dashed] (x.south west) -- (y0.north west);
+	\draw[dashed] (x0.south east) -- (y1.north west);
+	\draw[dashed] (x1.south east) -- (y2.north west);
+	\draw[dashed] (x2.south east) -- (y3.north west);
+	\draw[dashed] (x3.south east) -- (y3.north east);
+	\end{pgfonlayer}
+	
+	% sizes
+    \draw ($(x0.north west) + (0,.1) $) -- ($(x0.north west) + (0,.4) $);
+    \draw ($(x0.north east) + (0,.1) $) -- ($(x0.north east) + (0,.4) $);
+    \draw[<->] ($(x0.north west) + (0,.3) $) -- ($(x0.north east) + (0,.3) $) node[midway]{$P$};
+    
+    \draw ($(yc0.south west) + (0,-.1) $) -- ($(yc0.south west) + (0,-.4) $);
+    \draw[<->] ($(yc0.south west) + (0,-.3) $) -- ($(yc0.south west) + (1.5,-.3) $) node[midway, below]{$N-1$};
+    
+    
+\end{tikzpicture}
+
+
+% model for round-off error
+\begin{tikzpicture}[auto, node distance=2cm]
+    \node [input, name=input] {};
+    \node [sum,right of=input, xshift=1cm] (mul){$\times$};
+    \node [sum,right of=mul, xshift=1cm] (sum){$+$};
+    \node [input, below of=sum,yshift=1cm] (error) {};
+    \node [input, above of=mul,yshift=-1cm] (coeff) {};
+    \node [output, right of=sum,xshift=0cm] (output) {};
+    
+    \draw [-latex] (input) node[left]{$x_Q[k]$}  -- (mul);
+    \draw [-latex] (mul) -- (sum);
+    \draw [-latex] (sum)  -- (output) node[right]{$y_Q[k]$};
+    \draw [-latex] (error) node[below]{$e[k]$} -- (sum);
+    \draw [-latex] (coeff) node[above]{$a_Q$} -- (mul);
+    
+    \draw [dashed] (.5,-1.6) rectangle (5.5,0.7);
+
+\end{tikzpicture} 
+
+
+
+\end{document}

@@ -1,0 +1,1 @@
+The illustrations in the notebooks are drawn in LaTeX using the TikZ/PGF package. The images are exported as PNG files using the standalone package and resized by convert from ImageMagick. The PNG parameter ‚density‘ is set for an appropriate size when exporting the notebooks as PDF using nbconvert. The OS X/Linux shell scripts recreate the images in the correct subdirectories.

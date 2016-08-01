@@ -1,0 +1,36 @@
+\input{prefix}
+
+% =============================================================================
+% =============================================================================
+\begin{document}
+
+% Measurement of physical quantities
+\begin{tikzpicture}[auto, node distance=3cm]
+    \node [input, name=input] {};
+    \node [sum,right of=input,xshift=1cm] (sum1){$+$};
+    \node [block, right of=sum1,yshift=0cm] (system1){\Large $\mathcal{H}$};
+    \node [output, right of=system1,xshift=0cm] (output) {};
+    \node [input, below of=sum1,yshift=2cm] (noise) {};
+    
+    \draw [-latex] (input) node[left]{\shortstack{physical \\ quantity}}  -- (sum1);
+    \draw [-latex] (sum1)  -- (system1);
+    \draw [-latex] (system1)  -- (output) node[right]{sensor data};
+    \draw [-latex] (noise) node[below]{noise} -- (sum1);
+\end{tikzpicture}
+
+% Communication channel
+\begin{tikzpicture}[auto, node distance=3cm]
+    \node [input, name=input] {};
+    \node [block, right of=input,yshift=0cm] (system1){\Large $\mathcal{H}$};
+    \node [sum,right of=system1,xshift=1cm] (sum1){$+$};
+    \node [output, right of=system1,xshift=0cm] (output) {};
+    \node [input, below of=sum1,yshift=2cm] (noise) {};
+    
+    \draw [-latex] (input) node[left]{message}  -- (system1);
+    \draw [-latex] (system1)  -- (sum1);
+    \draw [-latex] (sum1)  -- (output) node[right]{\shortstack{received\\message}};
+    \draw [-latex] (noise) node[below]{noise} -- (sum1);
+\end{tikzpicture}
+
+
+\end{document}

@@ -1,0 +1,32 @@
+\input{prefix}
+
+% =============================================================================
+% =============================================================================
+\begin{document}
+
+% Signal model for Wiener filter
+\begin{tikzpicture}[auto, node distance=2cm]
+    \node [input, name=input] {};
+    \node [block, right of=input,yshift=0cm] (system){\Large $G(e^{j \Omega})$};
+    \node [sum,right of=system, xshift=1cm] (sum){$+$};
+    \node [input, below of=sum,yshift=1cm] (noise) {};
+    \node [input, right of=sum, xshift=-1cm] (observation1) {};
+    \node [input, right of=observation1, xshift=-1.2cm] (observation) {};
+    \node [block, right of=observation,yshift=0cm] (filter){\Large $H(e^{j \Omega})$};
+    \node [output, right of=filter,xshift=0cm] (output) {};
+    
+    \draw [-latex] (input) node[left]{$s[k]$}  -- (system);
+    \draw [-latex] (system)  -- (sum);
+    \draw [-latex] (sum)  -- (observation1) node[right]{$x[k]$};
+    \draw [-latex] (observation) -- (filter);
+    \draw [-latex] (filter)  -- (output) node[right]{$y[k]$};
+    \draw [-latex] (noise) node[below]{$n[k]$} -- (sum);
+
+    \draw [draw, dashed] (5.5, -2.0) -- (5.5, -.55);
+    \node at (2, -1.8) {Distortion};
+    \node at (8, -1.8) {Reconstruction};
+
+\end{tikzpicture}
+
+
+\end{document}

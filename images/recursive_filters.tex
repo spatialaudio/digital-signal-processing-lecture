@@ -1,0 +1,231 @@
+\input{prefix}
+
+% =============================================================================
+% =============================================================================
+\begin{document}
+
+
+
+
+% direct form I
+\begin{tikzpicture}[auto, node distance=25mm]
+	% blocks 1st level
+	\node[input] (in){};
+	\node[sum, right of=in, xshift=10mm, label={$b_0$}](b0){$\times$};
+	\node[sum, right of=b0, xshift=10mm](s0){$+$};
+	\node[sum, right of=s0, xshift=5mm](s0r){$+$};
+	\node[output, right of=s0r, xshift=15mm] (out){};
+	\node at ($(b0.west)-(1, 0)$) (c0){};
+	\node at ($(out)-(.8, 0)$) (c0r){};
+
+	% blocks 2nd level
+	\node[block, below of=c0, minimum width=5mm, minimum height=7mm, yshift=15mm](d0){$z^{-1}$};
+	\node[sum, below of=b0, yshift=-10mm, label={$b_1$}](b1){$\times$};
+	\node[sum, below of=s0, yshift=-10mm](s1){$+$};
+	\node[sum, below of=s0r, yshift=-10mm](s1r){$+$};
+	\node[sum, right of=s1r, xshift=10mm, label={$- a_1$}](a1){$\times$};
+	\node[block, below of=c0r, minimum width=5mm, minimum height=7mm, yshift=15mm](d0r){$z^{-1}$};
+	
+	% blocks M-th level
+	\node[block, below of=d0, minimum width=5mm, minimum height=7mm, yshift=-5mm](d1){$z^{-1}$};
+	\node[sum, below of=b1, yshift=-20mm, label={$b_M$}](b2){$\times$};
+	\node[block, below of=d0r, minimum width=5mm, minimum height=7mm, yshift=-5mm](d1r){$z^{-1}$};
+	\node[sum, below of=a1, yshift=-20mm, label={$-a_N$}](a2){$\times$};
+	
+	%lines
+	\draw[->] (in) node[left]{$x[k]$}--(b0);
+	\draw[->] (b0)--(s0);
+	\draw[->] (s0)--(s0r);
+	\draw[->] (s0r)--(out) node[right]{$y[k]$};
+	
+	\draw[->] (c0.center)--(d0);
+	\draw[->] (d0) |- (b1);
+	\draw[->] (b1) -- (s1);
+	\draw[->] (s1) -- (s0);
+	\draw[->] (c0r.center) -- (d0r);
+	\draw[->] (d0r) |- (a1);
+	\draw[->] (a1) -- (s1r);
+	\draw[->] (s1r) -- (s0r);
+	
+	\draw[->, dashed] (d0)--(d1);
+	\draw[->] (d1) |- (b2);
+	\draw[->, dashed] (b2) -| (s1);
+	\draw (b2) -| ($(s1)-(0,1.5)$);
+	
+	\draw[->, dashed] (d0r)--(d1r);
+	\draw[->] (d1r) |- (a2);
+	\draw[->, dashed] (a2) -| (s1r);
+	\draw (a2) -| ($(s1r)-(0,1.5)$);
+	
+	% delayed signals
+	\node[below of=in, yshift=5mm, xshift=-2mm] {\tiny $x[k-1]$};
+	\node[below of=in, yshift=-25mm, xshift=-1mm] {\tiny $x[k-M]$};
+	\node[below of=out, yshift=5mm, xshift=2mm] {\tiny $y[k-1]$};
+	\node[below of=out, yshift=-25mm, xshift=1mm] {\tiny $y[k-N]$};
+	
+	\node[right of=s0, yshift=-3mm, xshift=-18mm] {$w[k]$};
+	
+	\node[below of=b1, yshift=15mm]{\large $\vdots$};
+	\node[below of=a1, yshift=15mm]{\large $\vdots$};
+
+\end{tikzpicture}
+
+
+% direct form II
+\begin{tikzpicture}[auto, node distance=25mm]
+
+	% blocks 1st level
+	\node[input] (in){};
+	\node[sum, right of=in, xshift=0mm](s0r){$+$};
+	\node[sum, right of=s0r, xshift=50mm, label={$b_0$}](b0){$\times$};
+	\node[sum, right of=b0, xshift=5mm](s0){$+$};
+	\node[output, right of=s0, xshift=-15mm] (out){};
+	\node at ($(s0r.center)+(3.7, 0)$) (c0){};
+	\node[above of=c0, yshift=-20mm](w){$w[k]$};
+	
+	% blocks 2nd level
+	\node[block, below of=c0, minimum width=5mm, minimum height=7mm, yshift=15mm](d0){$z^{-1}$};
+	\node[sum, below of=b0, yshift=-10mm, label={$b_1$}](b1){$\times$};
+	\node[sum, below of=s0, yshift=-10mm](s1){$+$};
+	\node[sum, below of=s0r, yshift=-10mm](s1r){$+$};
+	\node[sum, right of=s1r, xshift=5mm, label={$- a_1$}](a1){$\times$};
+	
+	% blocks M-th level
+	\node[block, below of=d0, minimum width=5mm, minimum height=7mm, yshift=-5mm](d1){$z^{-1}$};
+	\node[sum, below of=b1, yshift=-20mm, label={$b_M$}](b2){$\times$};
+	\node[sum, below of=a1, yshift=-20mm, label={$-a_N$}](a2){$\times$};
+	
+	
+
+	%lines
+	\draw[->] (in) node[left]{$x[k]$}--(s0r);
+	\draw[->] (s0r)--(b0);
+	\draw[->] (b0)--(s0);
+	\draw[->] (s0)--(out) node[right]{$y[k]$};
+	
+	\draw[->] (c0.center)--(d0);
+	\draw[->] (d0) |- (b1);
+	\draw[->] (b1) -- (s1);
+	\draw[->] (s1) -- (s0);
+	\draw[->] (d0) |- (a1);
+	\draw[->] (a1) -- (s1r);
+	\draw[->] (s1r) -- (s0r);
+
+	\draw[->, dashed] (d0)--(d1);
+	\draw[->] (d1) |- (b2);
+	\draw[->] (d1) |- (a2);
+	
+	\draw[->, dashed] (a2) -| (s1r);
+	\draw[->, dashed] (b2) -| (s1);
+	\draw (a2) -| ($(s1r)-(0,1.5)$);
+	\draw (b2) -| ($(s1)-(0,1.5)$);
+	
+	\node[below of=b1, yshift=15mm]{\large $\vdots$};
+	\node[below of=a1, yshift=15mm]{\large $\vdots$};
+
+
+\end{tikzpicture}
+
+
+% direct form II transposed
+\begin{tikzpicture}[auto, node distance=25mm]
+
+	% blocks 1st level
+	\node[input] (in){};
+	\node[right of=in, xshift=-10mm](c0){};
+	\node[sum, right of=c0, xshift=5mm, label={$b_0$}](b0){$\times$};
+	\node[sum, right of=b0, xshift=10mm](s0){$+$};
+	\node[right of=s0, xshift=10mm](c1){};
+	\node[output, right of=c1, xshift=-15mm] (out){};
+	
+	%\node at ($(s0r.center)+(3.7, 0)$) (c0){};
+	
+	% blocks 2nd level
+	\node[block, below of=s0, minimum width=5mm, minimum height=7mm, yshift=10mm](d0){$z^{-1}$};
+	\node[sum, below of=b0, yshift=-20mm, label={$b_1$}](b1){$\times$};
+	\node[sum, below of=d0, yshift=-5mm](s1){$+$};
+	\node[sum, right of=s1, xshift=10mm, label={$- a_1$}](a1){$\times$};
+	
+	% blocks M-th level
+	\node[block, below of=d0, minimum width=5mm, minimum height=7mm, yshift=-10mm](d1){$z^{-1}$};
+	\node[sum, below of=d1, yshift=-5mm](s2){$+$};
+	\node[sum, below of=b1, yshift=-25mm, label={$b_M$}](b2){$\times$};
+	\node[sum, below of=a1, yshift=-25mm, label={$-a_N$}](a2){$\times$};
+	
+	
+
+	%lines
+	\draw[->] (in) node[left]{$x[k]$}--(b0);
+	\draw[->] (b0)--(s0);
+	\draw[->] (s0)--(out) node[right]{$y[k]$};
+
+	\draw[->] (c0.center) |- (b1);
+	\draw[->] (b1) -- (s1);
+	\draw[->] (s1) -- (d0) node[midway, right]{$w_1[k]$};
+	\draw[->] (d0) -- (s0);
+	\draw[->] (c1.center) |- (a1);
+	\draw[->] (a1) -- (s1);
+
+	\draw[->, dashed] (c0)|-(b2);
+	\draw[->] (b2) -- (s2);
+	\draw[->] (s2) -- (d1) node[midway, right]{$w_N[k]$};
+	\draw[->, dashed] (d1) -- (s1);
+	
+	\draw[->, dashed] (c1)|-(a2);
+	\draw[->] (a2) -- (s2);
+
+	\draw ($(c0)-(0,4.5)$) |- (b2);
+	\draw (a2) -| ($(c1)-(0,4.5)$);
+	
+	\node[below of=b1, yshift=15mm]{\large $\vdots$};
+	\node[below of=a1, yshift=15mm]{\large $\vdots$};
+
+
+\end{tikzpicture}
+
+
+% coupled form
+\begin{tikzpicture}[auto, node distance=25mm]
+
+	% blocks 1st level
+	\node[input] (in){};
+	\node[sum, right of=in, xshift=0mm](s0){$+$};
+	\node[block, right of=s0, minimum width=5mm, minimum height=7mm, xshift=-5mm](d0){$z^{-1}$};
+	\node[right of=d0, xshift=-12mm](c0){};	
+	\node[sum, right of=c1, xshift=-40mm, label={$\Im\{ z_\infty \}$}](a0){$\times$};
+	\node[sum, right of=a0, xshift=5mm](s1){$+$};
+	\node[right of=s1, xshift=5mm](c1){};	
+	\node[output, right of=c1, xshift=-15mm] (out){};
+	
+	% blocks 2nd level
+	\node[sum, below of=d0, yshift=-10mm, label={$\Re\{ z_\infty \}$}](a1){$\times$};
+	\node[sum, below of=s0, yshift=-10mm](s2){$+$};
+	\node[block, below of=c1, minimum width=5mm, minimum height=7mm, yshift=15mm](d1){$z^{-1}$};
+	\node[sum, left of=d1, yshift=-10mm, xshift=-7mm, label={$\Re\{ z_\infty \}$}](a2){$\times$};
+	
+	% feedback
+	\node[sum, below of=a0, yshift=-25mm, label={$- \Im\{ z_\infty \}$}](a3){$\times$};
+	
+	% lines
+	\draw[->] (in) node[left]{$x[k]$}--(s0);
+	\draw[->] (s0) -- (d0) node[midway, above]{$w[k]$};
+	\draw[->] (d0) -- (a0);
+	\draw[->] (a0) -- (s1);
+	\draw[->] (s1) --(out) node[right]{$y[k]$};
+	
+	\draw[->] (c0.center) |- (a1);
+	\draw[->] (a1) -- (s2);
+	\draw[->] (s2) -- (s0);
+	\draw[->] (c1.center) -- (d1);
+	\draw[->] (d1) |- (a2);	
+	\draw[->] (a2) -| (s1);
+	
+	\draw[->] (d1) |- (a3);
+	\draw[->] (a3) -| (s2);
+	
+\end{tikzpicture}
+
+
+
+
+\end{document}

@@ -1,0 +1,66 @@
+% TikZ-Einstellungen etc. für die Vorlesung Signale und Systeme 2
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{circuitikz}
+
+\usetikzlibrary{shapes}
+\usetikzlibrary{positioning}
+%\usetikzlibrary{snakes}
+\usetikzlibrary{decorations}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{patterns}
+
+% ===== tikzstyles for block diagrams, etc. =====
+\tikzstyle{block} = [draw, fill=gray!20, rectangle, minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{mul} = [draw, fill=gray!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzset{>=latex} % arrow heads
+%\tikzset{>=stealth} % arrow heads
+
+\tikzstyle{every node}=[font=\small]
+
+\pgfkeys{%
+/pgfplots/axis style/.code={%
+\pgfkeysalso{/pgfplots/every axis/.append style={#1}}},
+}
+
+\pgfplotsset{
+    mathaxis/.style={
+        axis lines=center,
+	xtick=\empty,
+	ytick=\empty,
+	xlabel style=below,
+	ylabel style=left,
+	% Make sure the origin is shown (http://tex.stackexchange.com/a/91253)
+	before end axis/.code={
+	    \addplot [draw=none, forget plot] coordinates {(0,0)};
+	},
+	anchor=origin,
+    },
+    stemaxis/.style={
+        mathaxis,
+        x=.8em,
+        y=6ex,
+        enlarge x limits={abs=1.2em},
+        enlarge y limits={abs=1.2em},
+    }
+}
+
+% bei den einzelnen Achsen: \begin{axis}[...]
+
+%scale=.35,
+%x post scale=.5,
+%y post scale=1.3,
+%xlabel style=right,
+%xlabel style={xshift=1ex},
+
+\tikzstyle{stem}=[ycomb,mark=*,mark size=2\pgflinewidth,color=blue,thick]
+
+% vim:filetype=tex
+
+\newcommand{\sha}{\bot \!\! \bot \!\! \bot}

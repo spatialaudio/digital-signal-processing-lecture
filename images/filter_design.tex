@@ -1,0 +1,65 @@
+\input{prefix}
+
+% =============================================================================
+% =============================================================================
+\begin{document}
+
+
+% Bilinear transform
+% =============================================================================
+\begin{tikzpicture}
+
+\begin{scope}
+
+\draw[->] (-2,0)--(2.3,0) node[right]{$\sigma$};
+\draw[->] (0,-2.2)--(0,2.2) node[left]{$j \omega$};
+\filldraw[pattern=north west lines,draw=none] (-1.8,-1.5) rectangle (0,1.5);
+\filldraw[pattern=horizontal lines,draw=none] (0,-1.5) rectangle (1.8,1.5);
+
+\draw[blue,thick] (-1.8,1.5)--(1.8,1.5);
+\draw[blue,thick] (-1.8,-1.5)--(1.8,-1.5);
+\node[above right] at (0,1.5){$j \frac{\pi}{T}$};
+\node[below right] at (0,-1.5){$- j \frac{\pi}{T}$};
+\draw[red,thick] (0,-1.5)--(0,1.5);
+
+\filldraw[cyan] (0,1.5) circle(0.07);
+\filldraw[cyan] (0,-1.5) circle(0.07);
+\filldraw[black] (0,0) circle(0.07);
+
+
+\end{scope}
+
+\begin{scope}[xshift=6cm]
+
+
+\filldraw[pattern=horizontal lines,draw=none] (-1.8,-1.8) rectangle (1.8,1.8);
+\filldraw[nonzero rule,pattern=north west lines,draw=red,fill=white,thick] (0,0) circle(1.25);
+\filldraw[pattern=north west lines,draw=none] (0,0) circle(1.25);
+
+\draw[->] (-2,0)--(2.2,0) node[right]{$\text{Re}\{z\}$};
+\draw[->] (0,-2.2)--(0,2.3) node[left]{$\text{Im}\{z\}$};
+
+\filldraw[black] (1.25,0) circle(0.07);
+\filldraw[cyan] (-1.25,0) circle(0.07);
+
+\node[below right] at (1.25,0){$1$};
+\node[above left] at (0,1.25){$1$};
+
+\end{scope}
+
+\end{tikzpicture}
+
+% 2nd order lowpass
+% =============================================================================
+\begin{circuitikz}[european]
+\draw (-0,0) to [R, l=R,o-] (2,0);
+\draw (2,0) to [L,l=L,-*,i=$i(t)$] (5,0);
+\draw (5,0) to [C,l=C,-*] (5,-2);
+\draw (5,0) to [short,-o] (7,0);
+\draw (0,-2) to [short,o-o] (7,-2);
+\draw[-latex] (0,-0.2)--(0,-1.8) node[midway,left]{$x(t)$};
+\draw[-latex] (7,-0.2)--(7,-1.8) node[midway,right]{$y(t)$};
+\end{circuitikz}
+
+
+\end{document}
