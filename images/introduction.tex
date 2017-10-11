@@ -1,0 +1,23 @@
+\input{prefix}
+
+% =============================================================================
+% =============================================================================
+\begin{document}
+
+
+% digital signal processing chain
+\begin{tikzpicture}[auto, node distance=4cm]
+    \node [input, name=input] {};
+    \node [block, right of=input,xshift=-2cm] (ADC){ADC};
+    \node [block, right of=ADC,yshift=0cm] (DSP){DSP};
+    \node [block, right of=DSP,yshift=0cm] (DAC){DAC};
+    \node [output, right of=DAC,xshift=-2cm] (output) {};
+
+    \draw [-latex] (input) node[left]{$x(t)$}  -- (ADC);
+    \draw [-latex] (ADC) -- (DSP) node[midway, below]{$x_\text{D}[k]$};
+    \draw [-latex] (DSP) -- (DAC) node[midway, below]{$y_\text{D}[k]$};;
+    \draw [-latex] (DAC)  -- (output) node[right]{$y(t)$};
+\end{tikzpicture}
+
+
+\end{document}
