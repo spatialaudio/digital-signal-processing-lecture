@@ -1,0 +1,32 @@
+\input{prefix}
+
+% =============================================================================
+% =============================================================================
+\begin{document}
+
+
+% links between Fourier transforms
+\begin{tikzpicture}[auto, node distance=4cm]
+    \node (cont) {$x(t)$};
+    \node [right of=cont] (F) {$X(j \omega)$};
+    \draw [o-*] (cont)--(F) node[midway, above]{$\mathcal{F}$};
+    
+    \node [below of=cont, yshift=2.2cm] (samp) {$x[k]$};
+    \node [right of=samp] (DTFT) {$X(e^{j \Omega})$};
+    \draw [o-*] (samp)--(DTFT) node[midway, above]{$\mathcal{F}_*$};
+    \draw [->] (cont)--(samp) node[midway, left]{\shortstack[r]{sampling\\$x[k] = x(k T)$}};
+    
+    \node [below of=samp, yshift=2.2cm] (wind) {$x_N[k]$};
+    \node [right of=wind] (DTFTN) {$X_N(e^{j \Omega})$};
+    \draw [o-*] (wind)--(DTFTN) node[midway, above]{$\mathcal{F}_*$};
+    \draw [->] (samp)--(wind) node[midway, left]{\shortstack[r]{windowing\\$x_N[k] = x[k] \cdot w[k]$}};;
+    
+    \node [below of=wind, yshift=2.2cm] (disc) {$x_N[k]$};
+    \node [right of=disc] (DFT) {$X_N[\mu]$};
+    \draw [o-*] (disc)--(DFT) node[midway, above]{$\text{DFT}_N$};
+    \draw [->] (DTFTN)--(DFT) node[midway, right]{\shortstack[l]{sampling\\$\Omega = \frac{2 \pi}{N} \mu$}};;
+    
+\end{tikzpicture}
+
+
+\end{document}
