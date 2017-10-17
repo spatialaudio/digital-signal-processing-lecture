@@ -24,7 +24,7 @@
     \node [below of=wind, yshift=2.2cm] (disc) {$x_N[k]$};
     \node [right of=disc] (DFT) {$X_N[\mu]$};
     \draw [o-*] (disc)--(DFT) node[midway, above]{$\text{DFT}_N$};
-    \draw [->] (DTFTN)--(DFT) node[midway, right]{\shortstack[l]{sampling\\$\Omega = \frac{2 \pi}{N} \mu$}};;
+    \draw [->] (DTFTN)--(DFT) node[midway, right]{\shortstack[l]{sampling\\$X_N[\mu] = X_N(e^{j \frac{2 \pi}{N} \mu})$}};
     
 \end{tikzpicture}
 
