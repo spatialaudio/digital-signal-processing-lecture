@@ -10,7 +10,7 @@ You can give the repository a [Star](https://github.com/spatialaudio/digital-sig
 The Jupyter notebooks are available
 
 * Online as [static web pages](http://nbviewer.ipython.org/github/spatialaudio/digital-signal-processing-lecture/blob/master/index.ipynb)
-* Online for [interactive use](http://mybinder.org/repo/spatialaudio/digital-signal-processing-lecture) using [binder](http://mybinder.org/)
+* Online for [interactive use](https://hub.mybinder.org/user/spatialaudio-di-cessing-lecture-ozvc5wsr/notebooks/index.ipynb) using [binder](http://mybinder.org/)
 * Local (offline) use on your computer
 
 The local use on your computer requires a local Jupyter/IPython installation. The [Anaconda distribtution](https://www.continuum.io/downloads) provides a good starting point. You have to [download or clone the notebooks from Github](http://github.com/spatialaudio/digital-signal-processing-lecture). Use a [Git](http://git-scm.org/) client to clone the notebooks and then start your local Jupyter server. For manual installation of Jupyter under OS X/Linux please refer to your packet manager.
