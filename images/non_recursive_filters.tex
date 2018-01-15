@@ -20,14 +20,14 @@
     \node[block, right of=x2, minimum height=1em, minimum width=25mm] (x3){$x_3[k]$};
     \node[right of=x3, xshift=-5mm] {$\dots$};
     
-    \node[block, right of=x0, minimum height=1em, minimum width=15mm, xshift=10cm] (h){$h[k]$};
+    \node[block, right of=x0, minimum height=1em, minimum width=15mm, xshift=10cm] (h){$h_N[k]$};
     \node[left of=h, xshift=15mm] {$*$};
     
     % convolved segments
-    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y0) at ($(x0.west) - (0, 1.5)$) {$y_0[k] = x_0[k] * h[k]$};
-    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y1) at ($(x1.west) - (0, 2.75)$) {$y_1[k] = x_1[k] * h[k]$};
-    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y2) at ($(x2.west) - (0, 4)$) {$y_2[k] = x_2[k] * h[k]$};
-    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y3) at ($(x3.west) - (0, 5.25)$) {$y_3[k] = x_3[k] * h[k]$};
+    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y0) at ($(x0.west) - (0, 1.5)$) {$y_0[k] = x_0[k] * h_N[k]$};
+    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y1) at ($(x1.west) - (0, 2.75)$) {$y_1[k] = x_1[k] * h_N[k]$};
+    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y2) at ($(x2.west) - (0, 4)$) {$y_2[k] = x_2[k] * h_N[k]$};
+    \node[block, minimum height=1em, minimum width=40mm, anchor=west](y3) at ($(x3.west) - (0, 5.25)$) {$y_3[k] = x_3[k] * h_N[k]$};
     % output
     \node[block, minimum height=1em, minimum width=100mm, anchor=west](y) at ($(x0.west) - (0, 7)$) {$y[k]$};
     \node[right of=y, xshift=35mm] {$\dots$};
