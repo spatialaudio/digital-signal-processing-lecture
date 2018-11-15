@@ -438,6 +438,93 @@ def biquad_peq2nd(fm, G, Q, fs, PEQType, QWarpType):
     return B, A, b, a
 
 
+def biquad_peq2nd_zoelzer(fm, G, Q, fs):
+    """calc coeff for peak/dip equalizer (PEQ) 2nd order according to
+
+    U. Zoelzer (2011): "DAFX - Digital Audio Effects", 2nd, Wiley, Table 2.4
+
+    input:
+    fm...mid frequency in Hz
+    G...gain or attenuation in dB
+    Q...quality
+    fs...sampling frequency in Hz
+
+    output:
+    B...numerator cofficients Laplace transfer function
+    A...denominator cofficients Laplace transfer function
+    b...numerator coefficients z-transfer function
+    a...denominator cofficients z-transfer function
+    """
+    K = np.tan(np.pi * fm/fs)
+    V0 = 10**(G/20)
+    b = np.array([1., 0., 0.])
+    a = np.array([1., 0., 0.])
+    if G > 0.:
+        tmp = 1 + K/Q + K**2
+        b[0] = (1 + V0/Q * K + K**2) / tmp
+        b[1] = 2 * (K**2 - 1) / tmp
+        b[2] = (1 - V0/Q * K + K**2) / tmp
+        a[1] = 2 * (K**2 - 1) / tmp
+        a[2] = (1 - K/Q + K**2) / tmp
+    else:
+        tmp = 1 + K / (V0*Q) + K**2
+        b[0] = (1 + K/Q + K**2) / tmp
+        b[1] = 2 * (K**2 - 1) / tmp
+        b[2] = (1 - K/Q + K**2) / tmp
+        a[1] = 2 * (K**2 - 1) / tmp
+        a[2] = (1 - K/(V0*Q) + K**2) / tmp
+
+    # if G==0 dB make filter flat
+    if np.isclose(G, 0., rtol=1e-05, atol=1e-08, equal_nan=False):
+        b = np.array([1., 0., 0.])
+        a = np.array([1., 0., 0.])
+
+    return b, a
+
+
+def biquad_peq2nd_RBJ(fm, G, Q, fs):
+    """calc coeff for peak/dip equalizer (PEQ) 2nd order according to
+
+    Robert Bristow-Johnson (1994): "The equivalence of various methods of
+    computing biquad coefficients for audio parametric equalizers."
+    In: Proc. of 97th AES Convention, San Fransisco, eq. (16)
+    http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
+
+    input:
+    fm...mid frequency in Hz
+    G...gain or attenuation in dB
+    Q...quality
+    fs...sampling frequency in Hz
+
+    output:
+    B...numerator cofficients Laplace transfer function
+    A...denominator cofficients Laplace transfer function
+    b...numerator coefficients z-transfer function
+    a...denominator cofficients z-transfer function
+    """
+    b = np.array([1., 0., 0.])
+    a = np.array([1., 0., 0.])
+    Ksqrt = 10**(G/40)
+    w0 = 2*np.pi*fm / fs
+    BW = bw_from_q(Q)
+    gamma = np.sinh(np.log(2)/2 * (BW*w0) / np.sin(w0))*np.sin(w0)
+    tmp = 1 + gamma/Ksqrt
+
+    b[0] = (1 + gamma*Ksqrt) / tmp
+    b[1] = -2 * np.cos(w0) / tmp
+    b[2] = (1 - gamma*Ksqrt) / tmp
+    a[0] = 1.
+    a[1] = -2 * np.cos(w0) / tmp
+    a[2] = (1 - gamma/Ksqrt) / tmp
+
+    # if G==0 dB make filter flat
+    if np.isclose(G, 0., rtol=1e-05, atol=1e-08, equal_nan=False):
+        b = np.array([1., 0., 0.])
+        a = np.array([1., 0., 0.])
+
+    return b, a
+
+
 def biquad_lshv1st(fc, G, fs, ShvType):
     """calc coeff for lowshelving 1st order
 
@@ -566,6 +653,83 @@ def biquad_lshv2nd(fc, G, Qz, Qp, fs, ShvType):
     return B, A, b, a
 
 
+def biquad_lshv2nd_Zoelzer(fc, G, fs):
+    """calc coeff for highshelving 2nd order according to
+
+    U. Zoelzer (2011): "DAFX - Digital Audio Effects", 2nd, Wiley, Table 2.3
+
+    input:
+    fc...cut frequency in Hz
+    G...gain or attenuation in dB
+    fs...sampling frequency in Hz
+    output:
+    B...numerator cofficients Laplace transfer function
+    A...denominator cofficients Laplace transfer function
+    b...numerator coefficients z-transfer function
+    a...denominator cofficients z-transfer function
+    """
+    V0 = 10**(G/20)
+    K = np.tan(np.pi*fc / fs)
+    b = np.array([1., 0., 0.])
+    a = np.array([1., 0., 0.])
+    if G > 0.:
+        tmp = 1 + np.sqrt(2)*K + K**2
+        b[0] = (1 + np.sqrt(2*V0)*K + V0*K**2) / tmp
+        b[1] = 2 * (V0 * K**2 - 1) / tmp
+        b[2] = (1 - np.sqrt(2*V0)*K + (V0 * K**2)) / tmp
+        a[1] = 2 * (K**2 - 1) / tmp
+        a[2] = (1 - np.sqrt(2)*K + K**2) / tmp
+    else:
+        tmp = V0 + np.sqrt(2*V0)*K + K**2
+        b[0] = V0 * (1 + np.sqrt(2)*K + K**2) / tmp
+        b[1] = 2*V0 * (K**2 - 1) / tmp
+        b[2] = V0 * (1 - np.sqrt(2)*K + K**2) / tmp
+        a[1] = 2 * (K**2 - V0) / tmp
+        a[2] = (V0 - np.sqrt(2*V0)*K + K**2) / tmp
+
+    # if G==0 dB make filter flat
+    if np.isclose(G, 0., rtol=1e-05, atol=1e-08, equal_nan=False):
+        b = np.array([1., 0., 0.])
+        a = np.array([1., 0., 0.])
+    return b, a
+
+
+def biquad_lshv2nd_RBJ(fc, G, S, fs):
+    """calc coeff for lowshelving 2nd order according to
+
+    http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
+
+    input:
+    fc...cut frequency in Hz
+    G...gain or attenuation in dB
+    S...normalized quality
+    fs...sampling frequency in Hz
+    output:
+    B...numerator cofficients Laplace transfer function
+    A...denominator cofficients Laplace transfer function
+    b...numerator coefficients z-transfer function
+    a...denominator cofficients z-transfer function
+    """
+    b = np.array([1., 0., 0.])
+    a = np.array([1., 0., 0.])
+    A = 10**(G/40)
+    w0 = 2*np.pi*fc / fs
+    alpha = np.sin(w0)/2 * np.sqrt((A + 1/A) * (1/S - 1) + 2)
+    b[0] = A * ((A + 1) - (A - 1)*np.cos(w0) + 2*np.sqrt(A)*alpha)
+    b[1] = 2*A * ((A - 1) - (A + 1)*np.cos(w0))
+    b[2] = A * ((A + 1) - (A - 1)*np.cos(w0) - 2*np.sqrt(A)*alpha)
+    a[0] = (A + 1) + (A - 1)*np.cos(w0) + 2*np.sqrt(A)*alpha
+    a[1] = -2 * ((A - 1) + (A + 1)*np.cos(w0))
+    a[2] = (A + 1) + (A - 1)*np.cos(w0) - 2*np.sqrt(A)*alpha
+    b = b / a[0]
+    a = a / a[0]
+    # if G==0 dB make filter flat
+    if np.isclose(G, 0., rtol=1e-05, atol=1e-08, equal_nan=False):
+        b = np.array([1., 0., 0.])
+        a = np.array([1., 0., 0.])
+    return b, a
+
+
 def biquad_hshv1st(fc, G, fs, ShvType):
     """calc coeff for highshelving 1st order
 
@@ -692,6 +856,82 @@ def biquad_hshv2nd(fc, G, Qz, Qp, fs, ShvType):
         a = np.array([1., 0., 0.])
 
     return B, A, b, a
+
+
+def biquad_hshv2nd_Zoelzer(fc, G, fs):
+    """calc coeff for highshelving 2nd order according to
+
+    U. Zoelzer (2011): "DAFX - Digital Audio Effects", 2nd, Wiley, Table 2.3
+
+    input:
+    fc...cut frequency in Hz
+    G...gain or attenuation in dB
+    fs...sampling frequency in Hz
+    output:
+    B...numerator cofficients Laplace transfer function
+    A...denominator cofficients Laplace transfer function
+    b...numerator coefficients z-transfer function
+    a...denominator cofficients z-transfer function
+    """
+    V0 = 10**(G/20)
+    K = np.tan(np.pi*fc / fs)
+    b = np.array([1., 0., 0.])
+    a = np.array([1., 0., 0.])
+    if G > 0.:
+        tmp = 1 + np.sqrt(2)*K + K**2
+        b[0] = (V0 + np.sqrt(2*V0)*K + K**2) / tmp
+        b[1] = 2 * (K**2 - V0) / tmp
+        b[2] = (V0 - np.sqrt(2*V0)*K + K**2) / tmp
+        a[1] = 2 * (K**2 - 1) / tmp
+        a[2] = (1 - np.sqrt(2)*K + K**2) / tmp
+    else:
+        tmp = 1 + np.sqrt(2*V0)*K + (V0 * K**2)
+        b[0] = V0 * (1 + np.sqrt(2)*K + K**2) / tmp
+        b[1] = 2*V0 * (K**2 - 1) / tmp
+        b[2] = V0 * (1 - np.sqrt(2.)*K + K**2) / tmp
+        a[1] = 2 * (V0 * K**2 - 1) / tmp
+        a[2] = (1 - np.sqrt(2*V0)*K + (V0 * K**2)) / tmp
+    # if G==0 dB make filter flat
+    if np.isclose(G, 0., rtol=1e-05, atol=1e-08, equal_nan=False):
+        b = np.array([1., 0., 0.])
+        a = np.array([1., 0., 0.])
+    return b, a
+
+
+def biquad_hshv2nd_RBJ(fc, G, S, fs):
+    """calc coeff for highshelving 2nd order according to
+
+    http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
+
+    input:
+    fc...cut frequency in Hz
+    G...gain or attenuation in dB
+    S...normalized quality
+    fs...sampling frequency in Hz
+    output:
+    B...numerator cofficients Laplace transfer function
+    A...denominator cofficients Laplace transfer function
+    b...numerator coefficients z-transfer function
+    a...denominator cofficients z-transfer function
+    """
+    b = np.array([1., 0., 0.])
+    a = np.array([1., 0., 0.])
+    A = 10**(G/40)
+    w0 = 2*np.pi*fc / fs
+    alpha = np.sin(w0)/2 * np.sqrt((A + 1/A) * (1/S - 1) + 2)
+    b[0] = A * ((A + 1) + (A - 1)*np.cos(w0) + 2*np.sqrt(A)*alpha)
+    b[1] = -2*A * ((A - 1) + (A + 1)*np.cos(w0))
+    b[2] = A * ((A + 1) + (A - 1)*np.cos(w0) - 2*np.sqrt(A)*alpha)
+    a[0] = (A + 1) - (A - 1)*np.cos(w0) + 2*np.sqrt(A)*alpha
+    a[1] = 2 * ((A - 1) - (A + 1)*np.cos(w0))
+    a[2] = (A + 1) - (A - 1)*np.cos(w0) - 2*np.sqrt(A)*alpha
+    b = b / a[0]
+    a = a / a[0]
+    # if G==0 dB make filter flat
+    if np.isclose(G, 0., rtol=1e-05, atol=1e-08, equal_nan=False):
+        b = np.array([1., 0., 0.])
+        a = np.array([1., 0., 0.])
+    return b, a
 
 
 def zplane_plot(ax, z, p):
