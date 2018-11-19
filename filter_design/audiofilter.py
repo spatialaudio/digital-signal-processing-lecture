@@ -5,8 +5,6 @@ URL = ('https://github.com/spatialaudio/'
        'digital-signal-processing-lecture/tree/master/'
        'filter_design')
 """
-from typing import Any, Union
-
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.signal as sig
