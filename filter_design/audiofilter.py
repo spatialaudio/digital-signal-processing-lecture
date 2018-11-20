@@ -907,10 +907,10 @@ def bode_plot(B, A, b, a, fs, N=2**12, fig=None):
     print("a =", a)
 
 
-def magnitude_plot_overlay(x, y, fs, title, legend, fig=None):
+def magnitude_plot_overlay(x, y, title, legend, fig=None):
     """Realize a bode plot containing magnitude for overlay."""
     if fig is None:
-        plt.figure()
+        plt.figure(figsize=(8,4))
     sz = y.shape
     lines = plt.semilogx(x, 20*np.log10(np.abs(y)))
     plt.legend(lines[:sz[1]], legend)
@@ -924,7 +924,7 @@ def magnitude_plot_overlay(x, y, fs, title, legend, fig=None):
                 1000, 2000, 5000, 10000, 20000),
                ["20", "50", "100", "200", "500",
                 "1k", "2k", "5k", "10k", "20k"])
-    plt.xlim(20, fs/2)
+    plt.xlim(20, x.max())
     plt.ylim(-18, 18)
     plt.grid(True, which="both", axis="both",
              linestyle="-", linewidth=0.5, color=(0.8, 0.8, 0.8))
