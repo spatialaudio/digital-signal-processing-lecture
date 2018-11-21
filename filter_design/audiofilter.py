@@ -781,11 +781,11 @@ def zplane_plot(ax, z, p):
     ax.plot(np.real(z), np.imag(z),
             "o", label="zeros",
             color="C2", fillstyle="none",
-            markersize=15, markeredgewidth=3)
+            markersize=8, markeredgewidth=2)
     ax.plot(np.real(p), np.imag(p),
             "x", label="poles",
             color="C3", fillstyle="none",
-            markersize=15, markeredgewidth=3)
+            markersize=8, markeredgewidth=2)
     ax.axvline(0, color="0.7")
     ax.axhline(0, color="0.7")
     unit_circle = Circle((0, 0), radius=1, fill=False,
@@ -813,7 +813,7 @@ def zplane_plot(ax, z, p):
             linestyle="-", linewidth=0.5, color=(0.8, 0.8, 0.8))
 
 
-def bode_plot(B, A, b, a, fs, N=2**12, fig=None):
+def bode_plot(B, A, b, a, fs, figsize=(10, 6.25), fig=None, N=2**12):
     """Realize a bode plot containing magnitude, phase and zplane.
 
     input:
@@ -826,8 +826,8 @@ def bode_plot(B, A, b, a, fs, N=2**12, fig=None):
     bode plot as new figure
     """
     if fig is None:
-        fig = plt.figure(figsize=(16, 9))
-
+        fig = plt.figure()
+    fig.set_size_inches(figsize)    
     p = np.roots(a)
     z = np.roots(b)
     W, Hd = signal.freqz(b, a, N)
@@ -907,10 +907,11 @@ def bode_plot(B, A, b, a, fs, N=2**12, fig=None):
     print("a =", a)
 
 
-def magnitude_plot_overlay(x, y, title, legend, fig=None):
+def magnitude_plot_overlay(x, y, title, legend, figsize=(6, 3.75), fig=None):
     """Realize a bode plot containing magnitude for overlay."""
     if fig is None:
-        plt.figure(figsize=(8,4))
+        fig = plt.figure()
+    fig.set_size_inches(figsize)     
     sz = y.shape
     lines = plt.semilogx(x, 20*np.log10(np.abs(y)))
     plt.legend(lines[:sz[1]], legend)
