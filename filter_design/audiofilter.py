@@ -51,14 +51,14 @@ def bilinear_biquad(B, A, fs):
     return b, a
 
 
-def bw_from_q(bandpass_quality):
+def bw_from_q(q):
     """Convert bandpass quality to bandwidth in octaves."""
-    return 2/np.log(2) * np.arcsinh(1/(2*bandpass_quality))
+    return 2/np.log(2) * np.arcsinh(1/(2*q))
 
 
-def q_from_bw(bandwidth_in_octaves):
+def q_from_bw(bw):
     """Convert bandwidth in octaves to bandpass quality."""
-    return 1 / (2*np.sinh(np.log(2)/2*bandwidth_in_octaves))
+    return 1 / (2*np.sinh(np.log(2)/2*bw))
 
 
 def f_prewarping(f, fs):
@@ -73,11 +73,11 @@ def f_prewarping(f, fs):
     return 2*fs*np.tan(np.pi*f/fs)
 
 
-def q_prewarping(Q, fm, fs, q_warp_method="cos"):
+def q_prewarping(q, fm, fs, q_warp_method="cos"):
     """Do the quality prewarping.
 
     input:
-    Q...bandpass quality to be prewarped
+    q...bandpass quality to be prewarped
     fm...analog mid-frequency in Hz
     fs...sampling frequency in Hz
     q_warp_method:
@@ -93,17 +93,17 @@ def q_prewarping(Q, fm, fs, q_warp_method="cos"):
     prewarped quality
     """
     if q_warp_method == "sin":
-        bandwidth = bw_from_q(Q)
+        bandwidth = bw_from_q(q)
         w0 = 2*np.pi*fm / fs
         bandwidth = bandwidth*w0 / np.sin(w0)
-        Qpre = q_from_bw(bandwidth)
+        qpre = q_from_bw(bandwidth)
     elif q_warp_method == "cos":
-        Qpre = Q * np.cos(np.pi*fm / fs)
+        qpre = q * np.cos(np.pi*fm / fs)
     elif q_warp_method == "tan":
-        Qpre = Q * (np.pi*fm / fs) / np.tan(np.pi*fm / fs)
+        qpre = q * (np.pi*fm / fs) / np.tan(np.pi*fm / fs)
     else:
-        Qpre = Q
-    return Qpre
+        qpre = q
+    return qpre
 
 
 def biquad_lp1st(fc, fs):
@@ -113,18 +113,20 @@ def biquad_lp1st(fc, fs):
     fc...cut frequency in Hz
     fs...sampling frequency in Hz
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wc = 2*np.pi*fc
-    wcpre = f_prewarping(fc, fs)
     B = np.array([0., 0, 1])
     A = np.array([0, 1 / wc, 1])
-    Bp = np.array([0., 0, 1])
-    Ap = np.array([0, 1 / wcpre, 1])
+
+    wcpre = f_prewarping(fc, fs)
+    Bp = 0., 0., 1.
+    Ap = 0., 1 / wcpre, 1.
     b, a = bilinear_biquad(Bp, Ap, fs)
+
     return B, A, b, a
 
 
@@ -138,18 +140,20 @@ def biquad_lp2nd(fc, fs, bi=1., ai=np.sqrt(2)):
     bi = 0.6180, ai = 1.3617 for Bessel 2nd order
     bi = 1, ai = 1.4142 for Butterworth 2nd order (default)
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wc = 2*np.pi*fc
-    wcpre = f_prewarping(fc, fs)
     B = np.array([0., 0, 1])
-    A = np.array([bi / (wc**2), ai / wc, 1])
-    Bp = np.array([0., 0, 1])
-    Ap = np.array([bi / (wcpre**2), ai / wcpre, 1])
+    A = np.array([bi / wc**2, ai / wc, 1])
+
+    wcpre = f_prewarping(fc, fs)
+    Bp = 0., 0., 1.
+    Ap = bi / wcpre**2, ai / wcpre, 1.
     b, a = bilinear_biquad(Bp, Ap, fs)
+
     return B, A, b, a
 
 
@@ -160,18 +164,20 @@ def biquad_hp1st(fc, fs):
     fc...cut frequency in Hz
     fs...sampling frequency in Hz
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wc = 2*np.pi*fc
-    wcpre = f_prewarping(fc, fs)
     B = np.array([0, 1 / wc, 0])
     A = np.array([0, 1 / wc, 1])
-    Bp = np.array([0, 1 / wcpre, 0])
-    Ap = np.array([0, 1 / wcpre, 1])
+
+    wcpre = f_prewarping(fc, fs)
+    Bp = 0., 1 / wcpre, 0.
+    Ap = 0., 1 / wcpre, 1.
     b, a = bilinear_biquad(Bp, Ap, fs)
+
     return B, A, b, a
 
 
@@ -185,68 +191,74 @@ def biquad_hp2nd(fc, fs, bi=1., ai=np.sqrt(2)):
     bi = 0.6180, ai = 1.3617 for Bessel 2nd order
     bi = 1, ai = 1.4142 for Butterworth 2nd order (default)
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wc = 2*np.pi*fc
+    B = np.array([1 / wc**2, 0, 0])
+    A = np.array([1 / wc**2, ai / wc, bi])
+
     wcpre = f_prewarping(fc, fs)
-    B = np.array([1 / (wc**2), 0, 0])
-    A = np.array([1 / (wc**2), ai / wc, bi])
-    Bp = np.array([1 / (wcpre**2), 0, 0])
-    Ap = np.array([1 / (wcpre**2), ai / wcpre, bi])
+    Bp = 1 / wcpre**2, 0., 0.
+    Ap = 1 / wcpre**2, ai / wcpre, bi
     b, a = bilinear_biquad(Bp, Ap, fs)
+
     return B, A, b, a
 
 
-def biquad_bp2nd(fm, Q, fs, q_warp_method="cos"):
+def biquad_bp2nd(fm, q, fs, q_warp_method="cos"):
     """Calc coeff for bandpass 2nd order.
 
     input:
     fm...mid frequency in Hz
-    Q...bandpass quality
+    q...bandpass quality
     fs...sampling frequency in Hz
     q_warp_method..."sin", "cos", "tan"
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wm = 2*np.pi*fm
+    B = np.array([0, 1 / (q*wm), 0])
+    A = np.array([1 / wm**2, 1 / (q*wm), 1])
+
     wmpre = f_prewarping(fm, fs)
-    Qpre = q_prewarping(Q, fm, fs, q_warp_method)
-    B = np.array([0, 1 / (Q*wm), 0])
-    A = np.array([1 / (wm**2), 1 / (Q*wm), 1])
-    Bp = np.array([0, 1 / (Qpre*wmpre), 0])
-    Ap = np.array([1 / (wmpre**2), 1 / (Qpre*wmpre), 1])
+    qpre = q_prewarping(q, fm, fs, q_warp_method)
+    Bp = 0., 1 / (qpre*wmpre), 0.
+    Ap = 1 / wmpre**2, 1 / (qpre*wmpre), 1.
     b, a = bilinear_biquad(Bp, Ap, fs)
+
     return B, A, b, a
 
 
-def biquad_bs2nd(fm, Q, fs, q_warp_method="cos"):
+def biquad_bs2nd(fm, q, fs, q_warp_method="cos"):
     """Calc coeff for bandstop 2nd order.
 
     input:
     fm...mid frequency in Hz
-    Q...bandpass quality
+    q...bandpass quality
     fs...sampling frequency in Hz
     q_warp_method..."sin", "cos", "tan"
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wm = 2*np.pi*fm
-    wmpre = f_prewarping(fm, fs)
-    Qpre = q_prewarping(Q, fm, fs, q_warp_method)
     B = np.array([1 / wm**2, 0, 1])
-    A = np.array([1 / wm**2, 1 / (Q*wm), 1])
-    Bp = np.array([1 / wmpre**2, 0, 1])
-    Ap = np.array([1 / wmpre**2, 1 / (Qpre*wmpre), 1])
+    A = np.array([1 / wm**2, 1 / (q*wm), 1])
+
+    wmpre = f_prewarping(fm, fs)
+    qpre = q_prewarping(q, fm, fs, q_warp_method)
+    Bp = 1 / wmpre**2, 0., 1.
+    Ap = 1 / wmpre**2, 1 / (qpre*wmpre), 1.
     b, a = bilinear_biquad(Bp, Ap, fs)
+
     return B, A, b, a
 
 
@@ -258,18 +270,20 @@ def biquad_ap1st(fc, fs, ai=1.):
     fs...sampling frequency in Hz
     ai...filter characteristics coefficients, e.g. ai = 1
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wc = 2*np.pi*fc
-    wcpre = f_prewarping(fc, fs)
     B = np.array([0, -ai / wc, 1])
     A = np.array([0, +ai / wc, 1])
-    Bp = np.array([0, -ai / wcpre, 1])
-    Ap = np.array([0, +ai / wcpre, 1])
+
+    wcpre = f_prewarping(fc, fs)
+    Bp = 0., -ai / wcpre, 1.
+    Ap = 0., +ai / wcpre, 1.
     b, a = bilinear_biquad(Bp, Ap, fs)
+
     return B, A, b, a
 
 
@@ -282,41 +296,43 @@ def biquad_ap2nd(fc, fs, bi=1., ai=np.sqrt(2)):
     bi, ai...filter characteristics coefficients, e.g.
     bi = 1, ai = 1.4142
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wc = 2*np.pi*fc
+    B = np.array([bi / wc**2, -ai / wc, 1])
+    A = np.array([bi / wc**2, +ai / wc, 1])
+
     wcpre = f_prewarping(fc, fs)
-    B = np.array([bi / (wc**2), -ai / wc, 1])
-    A = np.array([bi / (wc**2), +ai / wc, 1])
-    Bp = np.array([bi / (wcpre**2), -ai / wcpre, 1])
-    Ap = np.array([bi / (wcpre**2), +ai / wcpre, 1])
+    Bp = bi / wcpre**2, -ai / wcpre, 1.
+    Ap = bi / wcpre**2, +ai / wcpre, 1.
     b, a = bilinear_biquad(Bp, Ap, fs)
+
     return B, A, b, a
 
 
-def biquad_peq2nd(fm, G, Q, fs, filter_type="III", q_warp_method="cos"):
+def biquad_peq2nd(fm, G, q, fs, filter_type="III", q_warp_method="cos"):
     """Calc coeff for peak/dip equalizer (PEQ) 2nd order.
 
     input:
     fm...mid frequency in Hz
     G...gain or attenuation in dB
-    Q...quality
+    q...quality
     fs...sampling frequency in Hz
     filter_type..."I", "II", "III"
     q_warp_method..."sin", "cos", "tan"
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wm = 2*np.pi*fm
     wmpre = f_prewarping(fm, fs)
     g = 10**(G/20)
-    Qpre = q_prewarping(Q, fm, fs, q_warp_method)
+    qpre = q_prewarping(q, fm, fs, q_warp_method)
     if filter_type == "I":  # aka constant-Q PEQ
         gamma = g
         delta = g
@@ -335,21 +351,23 @@ def biquad_peq2nd(fm, G, Q, fs, filter_type="III", q_warp_method="cos"):
         b = np.array([1., 0, 0])
         a = b
     elif G > 0:
-        B = np.array([1 / wm**2, delta / (Q*wm), 1])
-        A = np.array([1 / wm**2, (delta/g) / (Q*wm), 1])
-        Bp = np.array([1 / wmpre**2, delta / (Qpre*wmpre), 1])
-        Ap = np.array([1 / wmpre**2, (delta/g) / (Qpre*wmpre), 1])
+        B = np.array([1 / wm**2, delta / (q*wm), 1])
+        A = np.array([1 / wm**2, (delta/g) / (q*wm), 1])
+
+        Bp = 1 / wmpre**2, delta / (qpre*wmpre), 1.
+        Ap = 1 / wmpre**2, (delta/g) / (qpre*wmpre), 1.
         b, a = bilinear_biquad(Bp, Ap, fs)
     else:
-        B = np.array([1 / wm**2, gamma / (Q*wm), 1])
-        A = np.array([1 / wm**2, (gamma/g) / (Q*wm), 1])
-        Bp = np.array([1 / wmpre**2, gamma / (Qpre*wmpre), 1])
-        Ap = np.array([1 / wmpre**2, (gamma/g) / (Qpre*wmpre), 1])
+        B = np.array([1 / wm**2, gamma / (q*wm), 1])
+        A = np.array([1 / wm**2, (gamma/g) / (q*wm), 1])
+
+        Bp = 1 / wmpre**2, gamma / (qpre*wmpre), 1.
+        Ap = 1 / wmpre**2, (gamma/g) / (qpre*wmpre), 1.
         b, a = bilinear_biquad(Bp, Ap, fs)
     return B, A, b, a
 
 
-def biquad_peq2nd_zoelzer(fm, G, Q, fs):
+def biquad_peq2nd_zoelzer(fm, G, q, fs):
     """Calc coeff for peak/dip equalizer (PEQ) 2nd order.
 
     according to
@@ -358,13 +376,13 @@ def biquad_peq2nd_zoelzer(fm, G, Q, fs):
     input:
     fm...mid frequency in Hz
     G...gain or attenuation in dB
-    Q...quality
+    q...quality
     fs...sampling frequency in Hz
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     K = np.tan(np.pi * fm/fs)
     V0 = 10**(G/20)
@@ -372,25 +390,25 @@ def biquad_peq2nd_zoelzer(fm, G, Q, fs):
         b = np.array([1., 0, 0])  # flat EQ
         a = b
     elif G > 0:
-        tmp = 1 + K/Q + K**2
-        b = np.array([(1 + V0/Q * K + K**2) / tmp,
+        tmp = 1 + K/q + K**2
+        b = np.array([(1 + V0/q * K + K**2) / tmp,
                       2 * (K**2 - 1) / tmp,
-                      (1 - V0/Q * K + K**2) / tmp])
+                      (1 - V0/q * K + K**2) / tmp])
         a = np.array([1,
                       2 * (K**2 - 1) / tmp,
-                     (1 - K/Q + K**2) / tmp])
+                     (1 - K/q + K**2) / tmp])
     else:
-        tmp = 1 + K / (V0*Q) + K**2
-        b = np.array([(1 + K/Q + K**2) / tmp,
+        tmp = 1 + K / (V0*q) + K**2
+        b = np.array([(1 + K/q + K**2) / tmp,
                       2 * (K**2 - 1) / tmp,
-                      (1 - K/Q + K**2) / tmp])
+                      (1 - K/q + K**2) / tmp])
         a = np.array([1,
                       2 * (K**2 - 1) / tmp,
-                      (1 - K/(V0*Q) + K**2) / tmp])
+                      (1 - K/(V0*q) + K**2) / tmp])
     return b, a
 
 
-def biquad_peq2nd_RBJ(fm, G, Q, fs):
+def biquad_peq2nd_RBJ(fm, G, q, fs):
     """Calc coeff for peak/dip equalizer (PEQ) 2nd order.
 
     according to
@@ -402,17 +420,17 @@ def biquad_peq2nd_RBJ(fm, G, Q, fs):
     input:
     fm...mid frequency in Hz
     G...gain or attenuation in dB
-    Q...quality
+    q...quality
     fs...sampling frequency in Hz
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     Ksqrt = 10**(G/40)
     w0 = 2*np.pi*fm / fs
-    BW = bw_from_q(Q)
+    BW = bw_from_q(q)
     gamma = np.sinh(np.log(2)/2 * (BW*w0) / np.sin(w0))*np.sin(w0)
     tmp = 1 + gamma/Ksqrt
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
@@ -437,10 +455,10 @@ def biquad_lshv1st(fc, G, fs, filter_type="III"):
     fs...sampling frequency in Hz
     filter_type..."I", "II", "III"
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wc = 2*np.pi*fc
     wcpre = f_prewarping(fc, fs)
@@ -461,20 +479,22 @@ def biquad_lshv1st(fc, G, fs, filter_type="III"):
     elif G > 0:
         B = np.array([0, 1 / wc, g * alpha**-2])
         A = np.array([0, 1 / wc, alpha**-2])
-        Bp = np.array([0, 1 / wcpre, g * alpha**-2])
-        Ap = np.array([0, 1 / wcpre, alpha**-2])
+
+        Bp = 0., 1 / wcpre, g * alpha**-2
+        Ap = 0., 1 / wcpre, alpha**-2
         b, a = bilinear_biquad(Bp, Ap, fs)
     else:
         B = np.array([0, 1 / wc, alpha**2])
         A = np.array([0, 1 / wc, g**-1 * alpha**2])
-        Bp = np.array([0, 1 / wcpre, alpha**2])
-        Ap = np.array([0, 1 / wcpre, g**-1 * alpha**2])
+
+        Bp = 0., 1 / wcpre, alpha**2
+        Ap = 0., 1 / wcpre, g**-1 * alpha**2
         b, a = bilinear_biquad(Bp, Ap, fs)
     return B, A, b, a
 
 
 def biquad_lshv2nd(fc, G, fs,
-                   filter_type="III", Qz=1/np.sqrt(2), Qp=1/np.sqrt(2)):
+                   filter_type="III", qz=1/np.sqrt(2), qp=1/np.sqrt(2)):
     """Calc coeff for lowshelving 2nd order.
 
     input:
@@ -482,13 +502,13 @@ def biquad_lshv2nd(fc, G, fs,
     G...gain or attenuation in dB
     fs...sampling frequency in Hz
     filter_type..."I", "II", "III"
-    Qz...zero Quality, e.g. Qz = 1/np.sqrt(2) for Butterworth quality
-    Qp...pole quality, e.g. Qp = 1/np.sqrt(2) for Butterworth quality
+    qz...zero Quality, e.g. qz = 1/np.sqrt(2) for Butterworth quality
+    qp...pole quality, e.g. qp = 1/np.sqrt(2) for Butterworth quality
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     g = 10**(G/20)
     wc = 2*np.pi*fc
@@ -507,18 +527,20 @@ def biquad_lshv2nd(fc, G, fs,
         b = np.array([1., 0, 0])
         a = b
     elif G > 0:
-        B = np.array([1 / wc**2, g**0.5 * alpha**-1 / (Qz*wc), g * alpha**-2])
-        A = np.array([1 / wc**2, alpha**-1 / (Qp*wc), alpha**-2])
-        Bp = np.array([1 / wcpre**2, g**0.5 * alpha**-1 / (Qz*wcpre),
-                       g * alpha**-2])
-        Ap = np.array([1 / wcpre**2, alpha**-1 / (Qp*wcpre), alpha**-2])
+        B = np.array([1 / wc**2, g**0.5 * alpha**-1 / (qz*wc), g * alpha**-2])
+        A = np.array([1 / wc**2, alpha**-1 / (qp*wc), alpha**-2])
+
+        Bp = [1 / wcpre**2, g**0.5 * alpha**-1 / (qz*wcpre),
+              g * alpha**-2]
+        Ap = [1 / wcpre**2, alpha**-1 / (qp*wcpre), alpha**-2]
         b, a = bilinear_biquad(Bp, Ap, fs)
     else:
-        B = np.array([1 / wc**2, alpha / (Qz*wc), alpha**2])
-        A = np.array([1 / wc**2, g**-0.5 * alpha / (Qp*wc), g**-1 * alpha**2])
-        Bp = np.array([1 / wcpre**2, alpha / (Qz*wcpre), alpha**2])
-        Ap = np.array([1 / wcpre**2, g**-0.5 * alpha / (Qp*wcpre),
-                       g**-1 * alpha**2])
+        B = np.array([1 / wc**2, alpha / (qz*wc), alpha**2])
+        A = np.array([1 / wc**2, g**-0.5 * alpha / (qp*wc), g**-1 * alpha**2])
+
+        Bp = [1 / wcpre**2, alpha / (qz*wcpre), alpha**2]
+        Ap = [1 / wcpre**2, g**-0.5 * alpha / (qp*wcpre),
+              g**-1 * alpha**2]
         b, a = bilinear_biquad(Bp, Ap, fs)
     return B, A, b, a
 
@@ -534,10 +556,10 @@ def biquad_lshv2nd_Zoelzer(fc, G, fs):
     G...gain or attenuation in dB
     fs...sampling frequency in Hz
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     V0 = 10**(G/20)
     K = np.tan(np.pi*fc / fs)
@@ -575,10 +597,10 @@ def biquad_lshv2nd_RBJ(fc, G, S, fs):
     S...normalized quality
     fs...sampling frequency in Hz
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     A = 10**(G/40)
     w0 = 2*np.pi*fc / fs
@@ -608,10 +630,10 @@ def biquad_hshv1st(fc, G, fs, filter_type="III"):
     fs...sampling frequency in Hz
     filter_type..."I", "II", "III"
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wc = 2*np.pi*fc
     wcpre = f_prewarping(fc, fs)
@@ -632,20 +654,22 @@ def biquad_hshv1st(fc, G, fs, filter_type="III"):
     elif G > 0:
         B = np.array([0, g * alpha**-2 / wc, 1])
         A = np.array([0, alpha**-2 / wc, 1])
-        Bp = np.array([0, g * alpha**-2 / wcpre, 1])
-        Ap = np.array([0, alpha**-2 / wcpre, 1])
+
+        Bp = 0., g * alpha**-2 / wcpre, 1.
+        Ap = 0., alpha**-2 / wcpre, 1.
         b, a = bilinear_biquad(Bp, Ap, fs)
     else:
         B = np.array([0, alpha**2 / wc, 1])
         A = np.array([0, g**-1 * alpha**2 / wc, 1])
-        Bp = np.array([0, alpha**2 / wcpre, 1])
-        Ap = np.array([0, g**-1 * alpha**2 / wcpre, 1])
+
+        Bp = 0., alpha**2 / wcpre, 1.
+        Ap = 0., g**-1 * alpha**2 / wcpre, 1.
         b, a = bilinear_biquad(Bp, Ap, fs)
     return B, A, b, a
 
 
 def biquad_hshv2nd(fc, G, fs,
-                   filter_type="III", Qz=1/np.sqrt(2), Qp=1/np.sqrt(2)):
+                   filter_type="III", qz=1/np.sqrt(2), qp=1/np.sqrt(2)):
     """Calc coeff for highshelving 2nd order.
 
     input:
@@ -653,13 +677,13 @@ def biquad_hshv2nd(fc, G, fs,
     G...gain or attenuation in dB
     fs...sampling frequency in Hz
     filter_type..."I", "II", "III"
-    Qz...zero Quality, e.g. Qz = 1/np.sqrt(2) for Butterworth quality
-    Qp...pole quality, e.g. Qp = 1/np.sqrt(2) for Butterworth quality
+    qz...zero Quality, e.g. qz = 1/np.sqrt(2) for Butterworth quality
+    qp...pole quality, e.g. qp = 1/np.sqrt(2) for Butterworth quality
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     wc = 2*np.pi*fc
     wcpre = f_prewarping(fc, fs)
@@ -678,18 +702,18 @@ def biquad_hshv2nd(fc, G, fs,
         b = np.array([1., 0, 0])
         a = b
     elif G > 0:
-        B = np.array([g * alpha**-2 / wc**2, g**0.5 * alpha**-1 / (Qz*wc), 1])
-        A = np.array([alpha**-2 / wc**2, alpha**-1 / (Qp*wc), 1])
-        Bp = np.array([g * alpha**-2 / wcpre**2,
-                       g**0.5 * alpha**-1 / (Qz*wcpre), 1])
-        Ap = np.array([alpha**-2 / wcpre**2, alpha**-1 / (Qp*wcpre), 1])
+        B = np.array([g * alpha**-2 / wc**2, g**0.5 * alpha**-1 / (qz*wc), 1])
+        A = np.array([alpha**-2 / wc**2, alpha**-1 / (qp*wc), 1])
+
+        Bp = g * alpha**-2 / wcpre**2, g**0.5 * alpha**-1 / (qz*wcpre), 1.
+        Ap = alpha**-2 / wcpre**2, alpha**-1 / (qp*wcpre), 1.
         b, a = bilinear_biquad(Bp, Ap, fs)
     else:
-        B = np.array([alpha**2 / wc**2, alpha / (Qz*wc), 1])
-        A = np.array([g**-1 * alpha**2 / wc**2, g**-0.5 * alpha / (Qp*wc), 1])
-        Bp = np.array([alpha**2 / wcpre**2, alpha / (Qz*wcpre), 1])
-        Ap = np.array([g**-1 * alpha**2 / wcpre**2,
-                       g**-0.5 * alpha/(Qp*wcpre), 1])
+        B = np.array([alpha**2 / wc**2, alpha / (qz*wc), 1])
+        A = np.array([g**-1 * alpha**2 / wc**2, g**-0.5 * alpha / (qp*wc), 1])
+
+        Bp = alpha**2 / wcpre**2, alpha / (qz*wcpre), 1.
+        Ap = g**-1 * alpha**2 / wcpre**2, g**-0.5 * alpha/(qp*wcpre), 1.
         b, a = bilinear_biquad(Bp, Ap, fs)
     return B, A, b, a
 
@@ -705,10 +729,10 @@ def biquad_hshv2nd_Zoelzer(fc, G, fs):
     G...gain or attenuation in dB
     fs...sampling frequency in Hz
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     V0 = 10**(G/20)
     K = np.tan(np.pi*fc / fs)
@@ -744,10 +768,10 @@ def biquad_hshv2nd_RBJ(fc, G, S, fs):
     S...normalized quality
     fs...sampling frequency in Hz
     output:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     """
     A = 10**(G/40)
     w0 = 2*np.pi*fc / fs
@@ -822,10 +846,10 @@ def bode_plot(B, A, b, a, fs, N, fig=None):
     """Realize a bode plot containing magnitude, phase and zplane.
 
     input:
-    B...numerator cofficients Laplace transfer function
-    A...denominator cofficients Laplace transfer function
+    B...numerator coefficients Laplace transfer function
+    A...denominator coefficients Laplace transfer function
     b...numerator coefficients z-transfer function
-    a...denominator cofficients z-transfer function
+    a...denominator coefficients z-transfer function
     fs...sampling frequency in Hz
     output:
     bode plot as new figure
