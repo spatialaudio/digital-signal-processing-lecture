@@ -7,6 +7,7 @@ addons:
     packages:
       - pandoc
       - ffmpeg
+      - libportaudio2
 install:
   - pip install -r requirements.txt
   - pip install -r ci/requirements.txt
