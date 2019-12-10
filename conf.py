@@ -218,7 +218,7 @@ htmlhelp_basename = 'Digital_Signal_Processing_doc'
 
 # -- Options for LaTeX output ---------------------------------------------
 nbsphinx_execute_arguments = ['--InlineBackend.figure_formats={"svg", "pdf"}']
-nbsphinx_execute = 'never'
+nbsphinx_execute = 'always'
 nbsphinx_timeout = 300
 nbsphinx_allow_errors = False
 
