@@ -1,0 +1,5 @@
+Sphinx>=1.3.6
+Sphinx-RTD-Theme
+nbsphinx
+ipykernel
+sphinx_bootstrap_theme

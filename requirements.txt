@@ -1,0 +1,7 @@
+matplotlib
+numpy
+scipy
+soundfile
+sympy
+statsmodels
+sounddevice
