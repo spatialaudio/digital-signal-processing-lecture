@@ -1,3 +1,1 @@
-c.InlineBackend.figure_formats = {'svg'}
-c.InlineBackend.rc = {'figure.dpi': 96}
-
+../ipython_kernel_config.py
