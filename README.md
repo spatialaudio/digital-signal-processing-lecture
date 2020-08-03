@@ -6,7 +6,7 @@ for a first glance. The materials provide an introduction into the foundations o
 ![Digital signal processing chain](https://github.com/spatialaudio/digital-signal-processing-lecture/blob/master/introduction/DSP.png)
 
 The notebooks constitute the lecture notes to the master's course [Digital Signal Processing](http://www.int.uni-rostock.de/Digitale-Signalverarbeitung.48.0.html) given by [Sascha Spors](http://www.int.uni-rostock.de/Staff-Info.23+B6JmNIYXNoPWUxOTliMTNjY2U2MDcyZjJiZTI0YTc4MmFkYTE5NjQzJnR4X2pwc3RhZmZfcGkxJTVCYmFja0lkJTVEPTMmdHhfanBzdGFmZl9waTElNUJzaG93VWlkJTVEPTExMQ__.0.html) at the University of Rostock, Germany. The contents are provided as [Open Educational Resource](https://de.wikipedia.org/wiki/Open_Educational_Resources), so feel free to fork, share, teach and learn.
-You can give the project a [Star](https://github.com/spatialaudio/signals-and-systems-lecture/stargazers) if you like it.
+You can give the project a [Star](https://github.com/spatialaudio//digital-signal-processing-lecture/stargazers) if you like it.
 
 
 ## Getting Started
