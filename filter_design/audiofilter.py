@@ -794,52 +794,55 @@ def biquad_hshv2nd_RBJ(fc, G, S, fs):
     return b, a
 
 
-def zplane_plot(ax, z, p):
-    """Realize a zplane plot.
+def zplane_plot(ax, z, p, k):
+    """Plot pole/zero/gain plot of discrete-time, linear-time-invariant system.
 
-    input:
-    ax...axes handle
-    z...zeros
-    p...poles
-    output:
-    zplane plot into ax
+    Note that the for-loop handling might be not very efficient
+    for very long FIRs
+
+    z...array of zeros in z-plane
+    p...array of poles in z-zplane
+    k...gain factor
+
+    taken from own work
+    https://github.com/spatialaudio/signals-and-systems-exercises/blob/master/sig_sys_tools.py  # noqa
+
+    currently we don't use the ax input parameter, we rather just plot
+    in hope for getting an appropriate place for it from the calling function
     """
-    if ax is None:
-        ax = plt.gca()
+    # draw unit circle
+    Nf = 2**7
+    Om = np.arange(Nf) * 2*np.pi/Nf
+    plt.plot(np.cos(Om), np.sin(Om), 'C7')
 
-    ax.plot(np.real(z), np.imag(z),
-            "o", label="zeros",
-            color="C2", fillstyle="none",
-            markersize=8, markeredgewidth=2)
-    ax.plot(np.real(p), np.imag(p),
-            "x", label="poles",
-            color="C3", fillstyle="none",
-            markersize=8, markeredgewidth=2)
-    ax.axvline(0, color="0.7")
-    ax.axhline(0, color="0.7")
-    unit_circle = Circle((0, 0), radius=1, fill=False,
-                         color="black", linestyle="-", alpha=0.9)
-    ax.add_patch(unit_circle)
-    ax.set_xscale("linear")
-    ax.set_yscale("linear")
-    ax.set_xlabel(r'Real{$z$}', color="xkcd:navy blue")
-    ax.set_ylabel(r'Imag{$z$}', color="xkcd:navy blue")
-    ax.set_title("Poles x and zeros o of discrete-time domain filter",
-                 color="xkcd:navy blue")
-    ax.axis("equal")
-    ax.set_xlim(-1.25, +1.25)
-    ax.set_xticks(np.arange(-1.25, 1.25+0.25, 0.25))
-    ax.set_xticklabels(["-1.25", "-1", "-0.75", "-0.5", "-0.25", "0",
-                        "0.25", "0.5", "0.75", "1", "1.25"],
-                       color="xkcd:navy blue")
-    ax.set_ylim(-1.25, +1.25)
-    ax.set_yticks(np.arange(-1.25, 1.25+0.25, 0.25))
-    ax.set_yticklabels(["-1.25", "-1", "-0.75", "-0.5", "-0.25", "0",
-                        "0.25", "0.5", "0.75", "1", "1.25"],
-                       color="xkcd:navy blue")
-    ax.legend(loc="best")
-    ax.grid(True, which="both", axis="both",
-            linestyle="-", linewidth=0.5, color=(0.8, 0.8, 0.8))
+    try:  # TBD: check if this pole is compensated by a zero
+        circle = Circle((0, 0), radius=np.max(np.abs(p)),
+                        color='C7', alpha=0.15)
+        plt.gcf().gca().add_artist(circle)
+    except ValueError:
+        print('no pole at all, ROC is whole z-plane')
+
+    zu, zc = np.unique(z, return_counts=True)  # find and count unique zeros
+    for zui, zci in zip(zu, zc):  # plot them individually
+        plt.plot(np.real(zui), np.imag(zui), ms=7,
+                 color='C0', marker='o', fillstyle='none')
+        if zci > 1:  # if multiple zeros exist then indicate the count
+            plt.text(np.real(zui), np.imag(zui), zci)
+
+    pu, pc = np.unique(p, return_counts=True)  # find and count unique poles
+    for pui, pci in zip(pu, pc):  # plot them individually
+        plt.plot(np.real(pui), np.imag(pui), ms=7,
+                 color='C3', marker='x')
+        if pci > 1:  # if multiple poles exist then indicate the count
+            plt.text(np.real(pui), np.imag(pui), pci)
+
+    plt.text(0, +1, 'k=%f' % k)
+    plt.text(0, -1, 'ROC for causal: white')
+    plt.axis('square')
+    # plt.axis([-2, 2, -2, 2])
+    plt.xlabel(r'$\Re\{z\}$')
+    plt.ylabel(r'$\Im\{z\}$')
+    plt.grid(True)
 
 
 def bode_plot(B, A, b, a, fs, N, fig=None):
@@ -856,8 +859,7 @@ def bode_plot(B, A, b, a, fs, N, fig=None):
     """
     if fig is None:
         fig = plt.figure()
-    p = np.roots(a)
-    z = np.roots(b)
+    z, p, k = signal.tf2zpk(b, a)
     W, Hd = signal.freqz(b, a, N)
     s, Ha = signal.freqs(B, A, fs*W)
     if Hd[0] == 0:
@@ -927,7 +929,7 @@ def bode_plot(B, A, b, a, fs, N, fig=None):
 
     # zplane
     ax3 = fig.add_subplot(gs[:, 1])
-    zplane_plot(ax3, z, p)
+    zplane_plot(ax3, z, p, k)
 
     print("B =", B)
     print("A =", A)
