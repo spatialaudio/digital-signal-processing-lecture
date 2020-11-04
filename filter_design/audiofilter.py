@@ -832,7 +832,8 @@ def zplane_plot(ax, z, p, k):
     k...gain factor
 
     taken from own work
-    https://github.com/spatialaudio/signals-and-systems-exercises/blob/master/sig_sys_tools.py  # noqa
+    URL = ('https://github.com/spatialaudio/signals-and-systems-exercises/'
+           'blob/master/sig_sys_tools.py')
 
     currently we don't use the ax input parameter, we rather just plot
     in hope for getting an appropriate place for it from the calling function
