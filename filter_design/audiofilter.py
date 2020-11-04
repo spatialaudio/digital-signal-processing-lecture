@@ -2,12 +2,35 @@
 
 for 1st / 2nd order audio biquads
 
+this code is included in the open educational resource
+"Sascha Spors, Digital Signal Processing - Lecture notes featuring
+computational examples"
+
+hosted at
 URL = ('https://github.com/spatialaudio/'
        'digital-signal-processing-lecture/tree/master/'
        'filter_design')
+
+and is licensed under The MIT License (MIT):
+Copyright (c) 2020 Sascha Spors, Frank Schultz
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
 """
 import matplotlib.pyplot as plt
-from matplotlib.markers import MarkerStyle
 from matplotlib.patches import Circle
 import numpy as np
 from scipy import signal
@@ -343,8 +366,8 @@ def biquad_peq2nd(fm, G, q, fs, filter_type="III", q_warp_method="cos"):
         gamma = g**0.5
         delta = g**0.5
     else:
-        gamma = unknown_filter_type  # TBD: try except
-        delta = unknown_filter_type
+        raise ValueError("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only")
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
@@ -470,7 +493,8 @@ def biquad_lshv1st(fc, G, fs, filter_type="III"):
     elif filter_type == "III":  # one-half pad loss, midpoint
         alpha = g**0.25
     else:
-        alpha = unknown_filter_type  # try except TBD
+        raise ValueError("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only")
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
@@ -520,7 +544,8 @@ def biquad_lshv2nd(fc, G, fs,
     elif filter_type == "III":  # one-half pad loss, midpoint
         alpha = g**0.25
     else:
-        alpha = unknown_filter_type  # try except TBD
+        raise ValueError("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only")
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
@@ -645,7 +670,8 @@ def biquad_hshv1st(fc, G, fs, filter_type="III"):
     elif filter_type == "III":  # one-half pad loss, midpoint
         alpha = g**0.25
     else:
-        alpha = unknown_filter_type  # try except TBD
+        raise ValueError("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only")
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
@@ -695,7 +721,8 @@ def biquad_hshv2nd(fc, G, fs,
     elif filter_type == "III":  # one-half pad loss, midpoint
         alpha = g**0.25
     else:
-        alpha = unknown_filter_type  # try except TBD
+        raise ValueError("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only")
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
