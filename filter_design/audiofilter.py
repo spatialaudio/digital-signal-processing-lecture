@@ -366,8 +366,8 @@ def biquad_peq2nd(fm, G, q, fs, filter_type="III", q_warp_method="cos"):
         gamma = g**0.5
         delta = g**0.5
     else:
-        raise ValueError("inappropriate filter_type, "
-                         "please use 'I', 'II' or 'III' only")
+        raise ValueError(("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only"))
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
@@ -493,8 +493,8 @@ def biquad_lshv1st(fc, G, fs, filter_type="III"):
     elif filter_type == "III":  # one-half pad loss, midpoint
         alpha = g**0.25
     else:
-        raise ValueError("inappropriate filter_type, "
-                         "please use 'I', 'II' or 'III' only")
+        raise ValueError(("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only"))
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
@@ -544,8 +544,8 @@ def biquad_lshv2nd(fc, G, fs,
     elif filter_type == "III":  # one-half pad loss, midpoint
         alpha = g**0.25
     else:
-        raise ValueError("inappropriate filter_type, "
-                         "please use 'I', 'II' or 'III' only")
+        raise ValueError(("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only"))
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
@@ -670,8 +670,8 @@ def biquad_hshv1st(fc, G, fs, filter_type="III"):
     elif filter_type == "III":  # one-half pad loss, midpoint
         alpha = g**0.25
     else:
-        raise ValueError("inappropriate filter_type, "
-                         "please use 'I', 'II' or 'III' only")
+        raise ValueError(("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only"))
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
@@ -721,8 +721,8 @@ def biquad_hshv2nd(fc, G, fs,
     elif filter_type == "III":  # one-half pad loss, midpoint
         alpha = g**0.25
     else:
-        raise ValueError("inappropriate filter_type, "
-                         "please use 'I', 'II' or 'III' only")
+        raise ValueError(("inappropriate filter_type, "
+                         "please use 'I', 'II' or 'III' only"))
     if np.isclose(G, 0, rtol=1e-05, atol=1e-08, equal_nan=False):
         B = np.array([0., 0, 1])  # flat EQ
         A = B
