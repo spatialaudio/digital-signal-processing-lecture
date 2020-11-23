@@ -23,3 +23,5 @@ jobs:
       - name: portaudio
         run: sudo apt-get install libportaudio2
       - uses: treebeardtech/treebeard@master
+        with:
+          use-docker: false
