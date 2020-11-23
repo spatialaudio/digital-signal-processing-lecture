@@ -1,0 +1,25 @@
+# executes all code cells (=examples) in the notebooks using sphinx with the nbsphinx extension
+
+name: Integration Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+  
+jobs:
+  linux_py38:
+    runs-on: ubuntu-latest
+   
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - run: sudo apt-get install libportaudio2 libsndfile1 pandoc ffmpeg
+      - run: pip install -r requirements.txt
+      - run: pip install -r ci/requirements.txt   
+      - run: python -m sphinx . _build/ -b html
