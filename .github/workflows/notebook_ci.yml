@@ -21,6 +21,7 @@ jobs:
         with:
           python-version: 3.8
       - run: sudo apt-get install libportaudio2
+      - run: sudo apt-get install libsndfile1
       - run: pip install -r requirements.txt
       - uses: treebeardtech/treebeard@master
         with:
