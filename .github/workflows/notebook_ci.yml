@@ -4,11 +4,12 @@
 name: Integration Test
 
 on:
-  on: [push, pull_request]
+  push:
+  pull_request:
   
   schedule:
     - cron:  '30 1 1,15 * *'
-  
+
 jobs:
   linux_py38:
     runs-on: ubuntu-latest
