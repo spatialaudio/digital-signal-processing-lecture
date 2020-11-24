@@ -20,9 +20,12 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.8
-      - run: sudo apt-get install libportaudio2
-      - run: sudo apt-get install libsndfile1
+      - run: sudo apt-get install libportaudio2 libsndfile1 pandoc ffmpeg
       - run: pip install -r requirements.txt
-      - uses: treebeardtech/treebeard@master
-        with:
-          use-docker: false
+      - run: pip install -r ci/requirements.txt   
+      - run: python -m sphinx . _build/ -b html
+      
+      
+      #- uses: treebeardtech/treebeard@master
+      #  with:
+      #    use-docker: false
