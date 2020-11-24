@@ -1,5 +1,4 @@
-# Digital Signal Processing 
-## Theory and Computational Examples
+# Digital Signal Processing - Theory and Computational Examples
 
 ![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/workflows/Integration%20Test/badge.svg) [![Build Status](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture.svg?branch=master)](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture)
 
@@ -96,8 +95,6 @@ a tracked [pull request](https://github.com/spatialaudio/digital-signal-processi
 
 ## Build Status
 
-The computational examples in the notebooks are automatically build and checked for errors by continuous integration using the [travis-ci.org](https://travis-ci.org/) service and github actions.
+The computational examples in the notebooks are automatically build and checked for errors by continuous integration using github actions and the [travis-ci.org](https://travis-ci.org/) service.
 
-travis-ci [![Build Status](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture.svg?branch=master)](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture)
-
-actions ![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/workflows/Integration%20Test/badge.svg)
+![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/workflows/Integration%20Test/badge.svg) [![Build Status](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture.svg?branch=master)](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture)
