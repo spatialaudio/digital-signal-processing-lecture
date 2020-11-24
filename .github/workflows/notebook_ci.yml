@@ -1,6 +1,6 @@
-# executes all code cells (=examples) in the notebooks
+# executes all code cells (=examples) in the notebooks using sphinx with the nbsphinx extension
 
-name: examples
+name: Integration Test
 
 on:
   push:
@@ -9,10 +9,9 @@ on:
     branches: [ main ]
 
   workflow_dispatch:
-
-
+  
 jobs:
-  run_notebooks:
+  linux_py38:
     runs-on: ubuntu-latest
    
     steps:
@@ -24,8 +23,3 @@ jobs:
       - run: pip install -r requirements.txt
       - run: pip install -r ci/requirements.txt   
       - run: python -m sphinx . _build/ -b html
-      
-      
-      #- uses: treebeardtech/treebeard@master
-      #  with:
-      #    use-docker: false
