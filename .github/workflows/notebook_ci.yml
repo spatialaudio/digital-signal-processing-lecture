@@ -1,14 +1,13 @@
-# executes all code cells (=examples) in the notebooks using sphinx with the nbsphinx extension
+# executes all cells (e.g. numerical examples) in all notebooks 
+# by using sphinx with the nbsphinx extension
 
 name: Integration Test
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  workflow_dispatch:
+  on: [push, pull_request]
+  
+  schedule:
+    - cron:  '30 1 1,15 * *'
   
 jobs:
   linux_py38:
