@@ -1,6 +1,6 @@
 # Digital Signal Processing - Theory and Computational Examples
 
-![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/workflows/Integration%20Test/badge.svg) [![Build Status](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture.svg?branch=master)](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture)
+![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/workflows/Integration%20Test/badge.svg)
 
 This repository collects didactically edited [Jupyter](https://jupyter.org/) notebooks that introduce basic concepts of [Digital Signal Processing](https://en.wikipedia.org/wiki/Digital_signal_processing). Please take a look at the [static version](http://nbviewer.ipython.org/github/spatialaudio/digital-signal-processing-lecture/blob/master/index.ipynb)
 for a first glance. The materials provide an introduction into the foundations of spectral analysis, random signals, quantization and filtering. The theory is accompanied by a series of computational examples and exercises written in [IPython 3](http://ipython.org/).  
@@ -95,6 +95,6 @@ a tracked [pull request](https://github.com/spatialaudio/digital-signal-processi
 
 ## Build Status
 
-The computational examples in the notebooks are automatically build and checked for errors by continuous integration using github actions and the [travis-ci.org](https://travis-ci.org/) service.
+The computational examples in the notebooks are automatically build and checked for errors by continuous integration using github actions.
 
-![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/workflows/Integration%20Test/badge.svg) [![Build Status](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture.svg?branch=master)](https://travis-ci.org/spatialaudio/digital-signal-processing-lecture)
+![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/workflows/Integration%20Test/badge.svg)
