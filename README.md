@@ -1,6 +1,7 @@
 # Digital Signal Processing - Theory and Computational Examples
 
 ![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/workflows/Integration%20Test/badge.svg)
+<a href="https://nb.bohrium.dp.tech/detail/6641656506" target="_blank"><img src="https://cdn.dp.tech/bohrium/web/static/images/open-in-bohrium.svg" alt="Open In Bohrium"/></a>
 
 This repository collects didactically edited [Jupyter](https://jupyter.org/) notebooks that introduce basic concepts of [Digital Signal Processing](https://en.wikipedia.org/wiki/Digital_signal_processing). Please take a look at the [static version](http://nbviewer.ipython.org/github/spatialaudio/digital-signal-processing-lecture/blob/master/index.ipynb)
 at first glance. The materials provide an introduction to the foundations of spectral analysis, random signals, quantization, and filtering. A series of computational examples and exercises written in [IPython 3](http://ipython.org/) accompany the theory.
