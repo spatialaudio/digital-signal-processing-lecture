@@ -36,8 +36,8 @@ jobs:
     - run: pip install -r ci/requirements.txt   
 
     - name: Install PortAudio library
-      run: apt-get install libportaudio2
-    - run: apt-get install libasound-dev
+      run: sudo apt-get install libportaudio2
+    - run: sudo apt-get install libasound-dev
 
     - name: Find notebooks
       id: find-notebooks
