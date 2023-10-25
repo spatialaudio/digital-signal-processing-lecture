@@ -51,7 +51,7 @@ jobs:
         cat notebooks.txt | while read -r notebook; do
           jupyter nbconvert --to notebook --execute --inplace "$notebook"
         done
-      continue-on-error: true # Set to false for PullRequest
+      continue-on-error: false
       shell: bash
 
     - name: Check for errors
