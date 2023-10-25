@@ -3,7 +3,7 @@ name: Linting Notebooks with Black
 on:
   push:
     branches:
-      - ci  # Change this to your repository's main branch
+      - ci  # Change this to the repository's main branch
   pull_request:
     branches:
       - ci  
