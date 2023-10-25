@@ -3,10 +3,10 @@ name: Run Notebooks
 on:
   push:
     branches:
-      - ci  # Change this to the repository's main branch
+      - master  # Change this to the repository's main branch
   pull_request:
     branches:
-      - ci
+      - master
   schedule:
       - cron: "0 0 * * 0"  # Run every Sunday at midnight UTC (4 week interval)
 
