@@ -1,0 +1,60 @@
+name: Run Notebooks
+
+on:
+  push:
+    branches:
+      - ci  # Change this to your repository's main branch
+  pull_request:
+    branches:
+      - ci
+  schedule:
+      - cron: "0 0 * * 0"  # Run every Sunday at midnight UTC (4 week interval)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    # Testing matrix by printing the current Python version:
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+
+    - name: Install dependencies
+      run: pip install jupyter nbconvert
+    - run: pip install -r requirements.txt   
+
+    - name: Find notebooks
+      id: find-notebooks
+      run: |
+        find . -name "*.ipynb" > notebooks.txt
+        cat notebooks.txt
+      shell: bash
+
+    - name: Execute notebooks
+      run: |
+        cat notebooks.txt | while read -r notebook; do
+          jupyter nbconvert --to notebook --execute --inplace "$notebook"
+        done
+      continue-on-error: false
+      shell: bash
+
+    - name: Check for errors
+      run: |
+        if grep "raise Exception(" *.ipynb; then
+          echo "Error found in notebook(s)."
+          exit 1
+        else
+          echo "No errors found in notebooks."
+        fi
+      shell: bash
