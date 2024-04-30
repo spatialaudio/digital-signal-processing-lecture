@@ -1,4 +1,4 @@
-name: Linting Notebooks with Black
+name: Linting Notebooks
 
 on:
   push:
