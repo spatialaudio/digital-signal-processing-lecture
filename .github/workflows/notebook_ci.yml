@@ -1,7 +1,7 @@
 # executes all cells (e.g. numerical examples) in all notebooks 
 # by using sphinx with the nbsphinx extension
 
-name: Integration Test
+name: Sphinx build
 
 on:
   push:
