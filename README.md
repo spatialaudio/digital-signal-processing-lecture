@@ -1,7 +1,7 @@
 # Digital Signal Processing - Theory and Computational Examples
 
-[![Linting](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/lint_nb.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/lint_nb.yml)
-[![Notebook Execution](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/run_nb.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/run_nb.yml)
+[![Linting](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/lint_nb.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/lint_nb.yml) 
+[![Run Notebooks](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/run_nb.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/run_nb.yml) 
 [![Sphinx Built](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml)
 
 This repository collects didactically edited [Jupyter](https://jupyter.org/) notebooks that introduce basic concepts of [Digital Signal Processing](https://en.wikipedia.org/wiki/Digital_signal_processing). Please take a look at the [static version](http://nbviewer.ipython.org/github/spatialaudio/digital-signal-processing-lecture/blob/master/index.ipynb)
@@ -87,4 +87,6 @@ a tracked [pull request](https://github.com/spatialaudio/digital-signal-processi
 
 The notebooks' computational examples are automatically built and checked for errors by continuous integration using github actions.
 
-[![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml)
+[![Linting](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/lint_nb.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/lint_nb.yml) 
+[![Run Notebooks](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/run_nb.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/run_nb.yml) 
+[![Sphinx Built](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml)
