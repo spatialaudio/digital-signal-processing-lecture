@@ -1,6 +1,10 @@
 # Digital Signal Processing - Theory and Computational Examples
 
-[![Integration Test](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml)
+[![Linting](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/lint_nb.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/lint_nb.yml)
+
+[![Notebook Execution](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/run_nb.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/run_nb.yml)
+
+[![Sphinx Built](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml/badge.svg?branch=master)](https://github.com/spatialaudio/digital-signal-processing-lecture/actions/workflows/notebook_ci.yml)
 
 This repository collects didactically edited [Jupyter](https://jupyter.org/) notebooks that introduce basic concepts of [Digital Signal Processing](https://en.wikipedia.org/wiki/Digital_signal_processing). Please take a look at the [static version](http://nbviewer.ipython.org/github/spatialaudio/digital-signal-processing-lecture/blob/master/index.ipynb)
 at first glance. The materials provide an introduction to the foundations of spectral analysis, random signals, quantization, and filtering. A series of computational examples and exercises written in [IPython 3](http://ipython.org/) accompany the theory.
