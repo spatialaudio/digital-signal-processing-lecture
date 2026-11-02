@@ -5,3 +5,4 @@ soundfile
 sympy
 statsmodels
 sounddevice
+ipywidgets
