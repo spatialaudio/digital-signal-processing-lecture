@@ -40,6 +40,7 @@ Random Signals
     random_signals/important_distributions
     random_signals/white_noise
     random_signals/superposition
+    random_signals/summary
 
 
 Random Signals and LTI Systems
@@ -54,6 +55,7 @@ Random Signals and LTI Systems
     random_signals_LTI_systems/acoustic_impulse_response_measurement
     random_signals_LTI_systems/power_spectral_densities
     random_signals_LTI_systems/wiener_filter
+    random_sigmals_LTI_systems/wiener_filter_speech_denoising
     random_signals_LTI_systems/linear_prediction
 
 
